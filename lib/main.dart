@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 
 void main() {
@@ -61,6 +63,18 @@ class MyApp extends StatelessWidget {
             ),
           ),
         ),
+        bottomNavigationBar: BottomNavigationBar(
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.settings),
+              label: 'Settings',
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -95,28 +109,50 @@ class TopWidget extends StatelessWidget {
   }
 }
 
-class PasswordRow extends StatelessWidget {
+class PasswordRow extends StatefulWidget {
   const PasswordRow({Key? key}) : super(key: key);
+
+  @override
+  State<PasswordRow> createState() => _PasswordRowState();
+}
+
+class _PasswordRowState extends State<PasswordRow> {
+  String website = 'website.com';
+  String password = 'password';
+  bool showingPassword = false;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Row(
-          children: const [
+          children: [
             Text(
-              'website.com',
-              style: TextStyle(
+              website,
+              style: const TextStyle(
                 fontWeight: FontWeight.bold,
               ),
             ),
-            Spacer(),
-            Text('*********'),
-            SizedBox(
+            const Spacer(),
+            if (showingPassword) Text(password) else const Text('*********'),
+            const SizedBox(
               width: 30,
             ),
-            Icon(
-              Icons.visibility,
+            IconButton(
+              onPressed: () {
+                setState(() {
+                  if (showingPassword) {
+                    showingPassword = false;
+                  } else {
+                    showingPassword = true;
+                  }
+                });
+              },
+              icon: Icon(
+                showingPassword == true
+                    ? Icons.visibility_off
+                    : Icons.visibility,
+              ),
             ),
           ],
         ),

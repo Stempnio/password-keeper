@@ -3,8 +3,11 @@ import 'package:password_keeper/model/Credentials.dart';
 
 class CredentialsRow extends StatefulWidget {
   final Credentials credentials;
+  final Function delete;
 
-  const CredentialsRow({required this.credentials, Key? key}) : super(key: key);
+  const CredentialsRow(
+      {required this.credentials, required this.delete, Key? key})
+      : super(key: key);
 
   @override
   State<CredentialsRow> createState() => _CredentialsRowState();
@@ -19,11 +22,26 @@ class _CredentialsRowState extends State<CredentialsRow> {
       children: [
         Row(
           children: [
-            Text(
-              widget.credentials.websiteURL,
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
+            IconButton(
+              onPressed: () {
+                widget.delete();
+              },
+              icon: const Icon(Icons.delete),
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  widget.credentials.websiteURL,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                Text(widget.credentials.login)
+              ],
             ),
             const Spacer(),
             if (showingPassword)

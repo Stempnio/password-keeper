@@ -54,9 +54,16 @@ class _PasswordKeeperAppState extends State<PasswordKeeperApp> {
                 const TopCaption(),
                 Column(
                   children: credentials
-                      .map((e) => CredentialsRow(
-                            credentials: e,
-                          ))
+                      .map(
+                        (e) => CredentialsRow(
+                          credentials: e,
+                          delete: () {
+                            setState(() {
+                              credentials.remove(e);
+                            });
+                          },
+                        ),
+                      )
                       .toList(),
                 ),
               ],

@@ -1,13 +1,29 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
+import 'package:password_keeper/model/Credentials.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const PasswordKeeperApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class PasswordKeeperApp extends StatefulWidget {
+  const PasswordKeeperApp({Key? key}) : super(key: key);
+
+  @override
+  State<PasswordKeeperApp> createState() => _PasswordKeeperAppState();
+}
+
+class _PasswordKeeperAppState extends State<PasswordKeeperApp> {
+  // TODO: inject credentials
+  List<Credentials> credentials = [
+    Credentials(
+        websiteURL: 'website1.com', login: 'login', passwordHash: 'pass1'),
+    Credentials(
+        websiteURL: 'website2.com', login: 'login', passwordHash: 'pass2'),
+    Credentials(
+        websiteURL: 'website3.com', login: 'login', passwordHash: 'pass3'),
+    Credentials(
+        websiteURL: 'website4.com', login: 'login', passwordHash: 'pass4'),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -15,18 +31,32 @@ class MyApp extends StatelessWidget {
       home: Scaffold(
         appBar: AppBar(
           title: const Text('Password Keeper'),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(right: 20),
+              child: GestureDetector(
+                onTap: () {},
+                child: const Icon(
+                  Icons.search,
+                  size: 28,
+                ),
+              ),
+            )
+          ],
         ),
         body: Padding(
           padding: const EdgeInsets.all(20),
           child: Center(
             child: Column(
-              children: const [
-                TopWidget(),
-                PasswordRow(),
-                PasswordRow(),
-                PasswordRow(),
-                PasswordRow(),
-                PasswordRow(),
+              children: [
+                const TopWidget(),
+                Column(
+                  children: credentials
+                      .map((e) => CredentialsRow(
+                            credentials: e,
+                          ))
+                      .toList(),
+                ),
               ],
             ),
           ),
@@ -109,16 +139,16 @@ class TopWidget extends StatelessWidget {
   }
 }
 
-class PasswordRow extends StatefulWidget {
-  const PasswordRow({Key? key}) : super(key: key);
+class CredentialsRow extends StatefulWidget {
+  final Credentials credentials;
+
+  const CredentialsRow({required this.credentials, Key? key}) : super(key: key);
 
   @override
-  State<PasswordRow> createState() => _PasswordRowState();
+  State<CredentialsRow> createState() => _CredentialsRowState();
 }
 
-class _PasswordRowState extends State<PasswordRow> {
-  String website = 'website.com';
-  String password = 'password';
+class _CredentialsRowState extends State<CredentialsRow> {
   bool showingPassword = false;
 
   @override
@@ -128,13 +158,16 @@ class _PasswordRowState extends State<PasswordRow> {
         Row(
           children: [
             Text(
-              website,
+              widget.credentials.websiteURL,
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
               ),
             ),
             const Spacer(),
-            if (showingPassword) Text(password) else const Text('*********'),
+            if (showingPassword)
+              Text(widget.credentials.passwordHash)
+            else
+              const Text('*********'),
             const SizedBox(
               width: 30,
             ),

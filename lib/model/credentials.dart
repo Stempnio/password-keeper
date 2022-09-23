@@ -1,6 +1,10 @@
 class Credentials {
   late String websiteURL;
-  late String password;
+  late String login;
+  late String passwordHash;
 
-  Credentials({required this.websiteURL, required this.password});
+  Credentials(
+      {required this.websiteURL,
+      required this.login,
+      required this.passwordHash});
 }

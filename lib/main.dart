@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:password_keeper/model/Credentials.dart';
+import 'package:password_keeper/repository/credentials_repository.dart';
 import 'package:password_keeper/view/home/credentials_row.dart';
 import 'package:password_keeper/view/home/top_caption.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 void main() {
   runApp(const PasswordKeeperApp());
@@ -15,21 +17,29 @@ class PasswordKeeperApp extends StatefulWidget {
 }
 
 class _PasswordKeeperAppState extends State<PasswordKeeperApp> {
-  // TODO: inject credentials
-  List<Credentials> credentials = [
-    Credentials(
-        websiteURL: 'website1.com', login: 'login', passwordHash: 'pass1'),
-    Credentials(
-        websiteURL: 'website2.com', login: 'login', passwordHash: 'pass2'),
-    Credentials(
-        websiteURL: 'website3.com', login: 'login', passwordHash: 'pass3'),
-    Credentials(
-        websiteURL: 'website4.com', login: 'login', passwordHash: 'pass4'),
-  ];
+  CredentialsRepository credentialsRepository = CredentialsRepository();
+  bool loadingCredentials = true;
+
+  void getCredentials() async {
+    var result = await credentialsRepository.getCredentials();
+    setState(() {
+      credentials = result;
+      loadingCredentials = false;
+    });
+  }
+
+  List<Credentials> credentials = [];
+
+  @override
+  void initState() {
+    super.initState();
+    getCredentials();
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      // routes: ,
       home: Scaffold(
         appBar: AppBar(
           title: const Text('Password Keeper'),
@@ -43,6 +53,16 @@ class _PasswordKeeperAppState extends State<PasswordKeeperApp> {
                   size: 28,
                 ),
               ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(right: 20),
+              child: GestureDetector(
+                onTap: () {},
+                child: const Icon(
+                  Icons.edit,
+                  size: 28,
+                ),
+              ),
             )
           ],
         ),
@@ -52,27 +72,50 @@ class _PasswordKeeperAppState extends State<PasswordKeeperApp> {
             child: Column(
               children: [
                 const TopCaption(),
-                Column(
-                  children: credentials
-                      .map(
-                        (e) => CredentialsRow(
-                          credentials: e,
-                          delete: () {
-                            setState(() {
-                              credentials.remove(e);
-                            });
-                          },
-                        ),
+                loadingCredentials
+                    ? Column(
+                        children: [
+                          const Text('Loading data'),
+                          const SizedBox(
+                            height: 30,
+                          ),
+                          LoadingAnimationWidget.staggeredDotsWave(
+                              color: Colors.black, size: 70),
+                        ],
                       )
-                      .toList(),
-                ),
+                    : credentials.isEmpty
+                        ? const Text('No passwords yet')
+                        : Column(
+                            children: credentials
+                                .map(
+                                  (e) => CredentialsRow(
+                                    credentials: e,
+                                    delete: () {
+                                      setState(() {
+                                        credentials.remove(e);
+                                      });
+                                    },
+                                  ),
+                                )
+                                .toList(),
+                          ),
               ],
             ),
           ),
         ),
         floatingActionButton: FloatingActionButton(
           backgroundColor: Colors.lightGreen,
-          onPressed: () {},
+          // TODO: sheet for adding credentials
+          onPressed: () {
+            setState(() {
+              credentials.add(
+                Credentials(
+                    websiteURL: 'websiteNew.com',
+                    login: 'login',
+                    passwordHash: 'passNew'),
+              );
+            });
+          },
           child: const Icon(
             Icons.add,
           ),

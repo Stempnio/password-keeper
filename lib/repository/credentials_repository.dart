@@ -12,7 +12,7 @@ class CredentialsRepository {
         websiteURL: 'website4.com', login: 'login', passwordHash: 'pass4'),
   ];
 
-  getCredentials() async {
+  Future<List<Credentials>> getCredentials() async {
     List<Credentials> result = await Future.delayed(
       const Duration(seconds: 2),
       () {
@@ -25,5 +25,9 @@ class CredentialsRepository {
 
   deleteCredentials(Credentials el) {
     _credentials.remove(el);
+  }
+
+  addCredentials(Credentials el) {
+    _credentials.add(el);
   }
 }

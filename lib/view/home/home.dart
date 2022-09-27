@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:password_keeper/model/Credentials.dart';
 import 'package:password_keeper/repository/credentials_repository.dart';
+import 'package:password_keeper/view/home/add_credentials.dart';
+import 'package:password_keeper/view/home/add_credentials_route.dart';
 import 'package:password_keeper/view/home/credentials_row.dart';
 import 'package:password_keeper/view/home/top_caption.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -79,7 +81,7 @@ class _HomeState extends State<Home> {
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
         child: loadingError
             ? errorWidget()
             : Center(
@@ -90,42 +92,48 @@ class _HomeState extends State<Home> {
                         ? loadingWidget()
                         : credentials.isEmpty
                             ? const Text('No passwords yet')
-                            : Column(
-                                children: credentials
-                                    .map(
-                                      (e) => CredentialsRow(
-                                        credentials: e,
-                                        delete: () {
-                                          setState(() {
-                                            credentialsRepository
-                                                .deleteCredentials(e);
-                                            credentials.remove(e);
-                                          });
-                                        },
-                                      ),
-                                    )
-                                    .toList(),
+                            : Expanded(
+                                child: ListView.builder(
+                                  itemCount: credentials.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return CredentialsRow(
+                                      credentials: credentials[index],
+                                      delete: () {
+                                        setState(() {
+                                          credentialsRepository
+                                              .deleteCredentials(
+                                                  credentials[index]);
+                                          credentials.removeAt(index);
+                                        });
+                                      },
+                                    );
+                                  },
+                                ),
                               ),
                   ],
                 ),
               ),
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.lightGreen,
-        // TODO: sheet for adding credentials
+      floatingActionButton: FloatingActionButton.extended(
+        heroTag: 'add_credentials',
+        backgroundColor: Colors.blueAccent,
         onPressed: () {
-          Credentials newCredentials = Credentials(
-              websiteURL: 'websiteNew.com',
-              login: 'login',
-              passwordHash: 'passNew');
-
-          credentialsRepository.addCredentials(newCredentials);
-          setState(() {
-            credentials.add(newCredentials);
-          });
+          Navigator.push(
+            context,
+            AddCredentialsRoute(
+              builder: (context) => AddCredentials(
+                modifyCredentials: addCredentials,
+              ),
+            ),
+          );
         },
-        child: const Icon(
-          Icons.add,
+        icon: const Icon(Icons.add),
+        label: const Text(
+          'Add',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ),
       drawer: Drawer(
@@ -156,6 +164,16 @@ class _HomeState extends State<Home> {
     );
   }
 
+  void addCredentials() {
+    Credentials newCredentials = Credentials(
+        websiteURL: 'websiteNew.com', login: 'login', passwordHash: 'passNew');
+
+    credentialsRepository.addCredentials(newCredentials);
+    setState(() {
+      credentials.add(newCredentials);
+    });
+  }
+
   Widget loadingWidget() {
     return Column(
       children: [
@@ -168,7 +186,10 @@ class _HomeState extends State<Home> {
         const SizedBox(
           height: 30,
         ),
-        LoadingAnimationWidget.staggeredDotsWave(color: Colors.black, size: 70),
+        LoadingAnimationWidget.staggeredDotsWave(
+          color: Colors.black,
+          size: 70,
+        ),
       ],
     );
   }

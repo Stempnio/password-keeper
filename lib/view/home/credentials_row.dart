@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:password_keeper/model/Credentials.dart';
+import 'package:password_keeper/model/credentials.dart';
 
 class CredentialsRow extends StatefulWidget {
   final Credentials credentials;
-  final Function delete;
+  final Function edit;
 
   const CredentialsRow(
-      {required this.credentials, required this.delete, Key? key})
+      {required this.credentials, required this.edit, Key? key})
       : super(key: key);
 
   @override
@@ -18,16 +18,11 @@ class _CredentialsRowState extends State<CredentialsRow> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Row(
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
           children: [
-            IconButton(
-              onPressed: () {
-                widget.delete();
-              },
-              icon: const Icon(Icons.delete),
-            ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -67,10 +62,15 @@ class _CredentialsRowState extends State<CredentialsRow> {
                     : Icons.visibility,
               ),
             ),
+            IconButton(
+              onPressed: () {
+                widget.edit();
+              },
+              icon: const Icon(Icons.edit),
+            ),
           ],
         ),
-        const Divider(),
-      ],
+      ),
     );
   }
 }

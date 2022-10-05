@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class AddCredentialsRoute<T> extends PageRoute<T> {
-  AddCredentialsRoute({required WidgetBuilder builder}) : _builder = builder;
+class EditCredentialsRoute<T> extends PageRoute<T> {
+  EditCredentialsRoute({required WidgetBuilder builder}) : _builder = builder;
 
   final WidgetBuilder _builder;
 
@@ -15,7 +15,7 @@ class AddCredentialsRoute<T> extends PageRoute<T> {
   }
 
   @override
-  Color? get barrierColor => Colors.black12;
+  Color? get barrierColor => Colors.black54;
 
   @override
   String? get barrierLabel => 'Add credentials';

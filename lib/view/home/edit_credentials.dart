@@ -2,26 +2,28 @@ import 'package:flutter/material.dart';
 
 import 'package:password_keeper/model/credentials.dart';
 
-class AddCredentials extends StatefulWidget {
-  const AddCredentials({required this.modifyCredentials, Key? key})
-      : super(key: key);
-
-  final Function modifyCredentials;
+class EditCredentials extends StatefulWidget {
+  const EditCredentials({
+    Key? key,
+    required this.actionHandler,
+    required this.credentials,
+  }) : super(key: key);
+  final Function actionHandler;
+  final Credentials credentials;
 
   @override
-  State<AddCredentials> createState() => _AddCredentialsState();
+  State<EditCredentials> createState() => _EditCredentialsState();
 }
 
-class _AddCredentialsState extends State<AddCredentials> {
+class _EditCredentialsState extends State<EditCredentials> {
   final _formKey = GlobalKey<FormState>();
 
-  // Function modifyCredentials;
-  // Credentials credentials;
-  //
-  // _AddCredentialsState({
-  //   required this.credentials,
-  //   required this.modifyCredentials,
-  // });
+  // credentials that are used when invoking actionHandler function
+  Credentials credentials = Credentials(
+    websiteURL: "",
+    login: "",
+    passwordHash: "",
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -39,13 +41,8 @@ class _AddCredentialsState extends State<AddCredentials> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      // Row(
-                      //   children: const [
-                      //     Spacer(),
-                      //     Icon(Icons.close, color: Colors.red),
-                      //   ],
-                      // ),
                       TextFormField(
+                        initialValue: widget.credentials.websiteURL,
                         decoration: const InputDecoration(
                           hintText: 'Website URL',
                         ),
@@ -53,14 +50,15 @@ class _AddCredentialsState extends State<AddCredentials> {
                           if (value == null || value.isEmpty) {
                             return 'Website URL can not be empty';
                           } else {
-                            // setState(() {
-                            //   credentials.websiteURL = value;
-                            // });
+                            setState(() {
+                              credentials.websiteURL = value;
+                            });
                             return null;
                           }
                         },
                       ),
                       TextFormField(
+                        initialValue: widget.credentials.login,
                         decoration: const InputDecoration(
                           hintText: 'Username',
                         ),
@@ -68,14 +66,16 @@ class _AddCredentialsState extends State<AddCredentials> {
                           if (value == null || value.isEmpty) {
                             return 'Username can not be empty';
                           } else {
-                            // setState(() {
-                            //   credentials.login = value;
-                            // });
+                            setState(() {
+                              credentials.login = value;
+                            });
                             return null;
                           }
                         },
                       ),
                       TextFormField(
+                        initialValue: widget.credentials.passwordHash,
+                        obscureText: true,
                         decoration: const InputDecoration(
                           hintText: 'Password',
                         ),
@@ -83,9 +83,9 @@ class _AddCredentialsState extends State<AddCredentials> {
                           if (value == null || value.isEmpty) {
                             return 'Password can not be empty';
                           } else {
-                            // setState(() {
-                            //   credentials.passwordHash = value;
-                            // });
+                            setState(() {
+                              credentials.passwordHash = value;
+                            });
                             return null;
                           }
                         },
@@ -97,11 +97,11 @@ class _AddCredentialsState extends State<AddCredentials> {
                       ElevatedButton(
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
-                            widget.modifyCredentials;
+                            widget.actionHandler(credentials);
                             Navigator.pop(context);
                           }
                         },
-                        child: const Text('Add'),
+                        child: const Text('Submit'),
                       ),
                     ],
                   ),

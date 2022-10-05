@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:password_keeper/model/Credentials.dart';
+import 'package:password_keeper/model/credentials.dart';
 import 'package:password_keeper/repository/credentials_repository.dart';
-import 'package:password_keeper/view/home/add_credentials.dart';
-import 'package:password_keeper/view/home/add_credentials_route.dart';
+import 'package:password_keeper/utils/credentials_utils.dart';
+import 'package:password_keeper/view/home/edit_credentials.dart';
+import 'package:password_keeper/view/home/edit_credentials_route.dart';
 import 'package:password_keeper/view/home/credentials_row.dart';
 import 'package:password_keeper/view/home/top_caption.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -99,14 +100,11 @@ class _HomeState extends State<Home> {
                                       (BuildContext context, int index) {
                                     return CredentialsRow(
                                       credentials: credentials[index],
-                                      delete: () {
-                                        setState(() {
-                                          credentialsRepository
-                                              .deleteCredentials(
-                                                  credentials[index]);
-                                          credentials.removeAt(index);
-                                        });
-                                      },
+                                      edit: () => openEditCredentialsMenu(
+                                          (Credentials editedCredentials) =>
+                                              editCredentials(
+                                                  editedCredentials, index),
+                                          credentials[index]),
                                     );
                                   },
                                 ),
@@ -119,14 +117,7 @@ class _HomeState extends State<Home> {
         heroTag: 'add_credentials',
         backgroundColor: Colors.blueAccent,
         onPressed: () {
-          Navigator.push(
-            context,
-            AddCredentialsRoute(
-              builder: (context) => AddCredentials(
-                modifyCredentials: addCredentials,
-              ),
-            ),
-          );
+          openEditCredentialsMenu(addCredentials, emptyCredentials());
         },
         icon: const Icon(Icons.add),
         label: const Text(
@@ -164,13 +155,36 @@ class _HomeState extends State<Home> {
     );
   }
 
-  void addCredentials() {
-    Credentials newCredentials = Credentials(
-        websiteURL: 'websiteNew.com', login: 'login', passwordHash: 'passNew');
+  void openEditCredentialsMenu(Function action, Credentials credentials) {
+    Navigator.push(
+      context,
+      EditCredentialsRoute(
+        builder: (context) => EditCredentials(
+          actionHandler: action,
+          credentials: credentials,
+        ),
+      ),
+    );
+  }
 
+  void deleteCredentials(Credentials credentialsToBeRemoved) {
+    setState(() {
+      credentialsRepository.deleteCredentials(credentialsToBeRemoved);
+      credentials.remove(credentialsToBeRemoved);
+    });
+  }
+
+  void addCredentials(Credentials newCredentials) {
     credentialsRepository.addCredentials(newCredentials);
     setState(() {
       credentials.add(newCredentials);
+    });
+  }
+
+  void editCredentials(Credentials editedCredentials, int index) {
+    credentialsRepository.modifyCredentials(index, editedCredentials);
+    setState(() {
+      credentials[index] = editedCredentials;
     });
   }
 

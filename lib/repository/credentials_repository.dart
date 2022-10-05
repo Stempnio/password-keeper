@@ -1,4 +1,4 @@
-import '../model/Credentials.dart';
+import 'package:password_keeper/model/credentials.dart';
 
 class CredentialsRepository {
   List<Credentials> _credentials = [
@@ -23,11 +23,33 @@ class CredentialsRepository {
     return result;
   }
 
-  deleteCredentials(Credentials el) {
-    _credentials.remove(el);
+  bool deleteCredentials(Credentials el) {
+    try {
+      _credentials.remove(el);
+      return true;
+    } catch (e) {
+      print(e);
+      return false;
+    }
   }
 
-  addCredentials(Credentials el) {
-    _credentials.add(el);
+  bool modifyCredentials(int index, Credentials el) {
+    try {
+      _credentials[index] = el;
+      return true;
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
+
+  bool addCredentials(Credentials el) {
+    try {
+      _credentials.add(el);
+      return true;
+    } catch (e) {
+      print(e);
+      return false;
+    }
   }
 }

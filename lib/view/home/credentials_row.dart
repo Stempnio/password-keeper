@@ -42,7 +42,10 @@ class _CredentialsRowState extends State<CredentialsRow> {
             if (showingPassword)
               Text(widget.credentials.passwordHash)
             else
-              const Text('*********'),
+              const Text(
+                '*********',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
             const SizedBox(
               width: 30,
             ),
@@ -66,7 +69,7 @@ class _CredentialsRowState extends State<CredentialsRow> {
               onPressed: () {
                 widget.edit();
               },
-              icon: const Icon(Icons.edit),
+              icon: const Icon(Icons.more_vert),
             ),
           ],
         ),

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:password_keeper/model/credentials.dart';
 import 'package:password_keeper/repository/credentials_repository.dart';
@@ -98,13 +99,17 @@ class _HomeState extends State<Home> {
                                   itemCount: credentials.length,
                                   itemBuilder:
                                       (BuildContext context, int index) {
-                                    return CredentialsRow(
-                                      credentials: credentials[index],
-                                      edit: () => openEditCredentialsMenu(
-                                          (Credentials editedCredentials) =>
-                                              editCredentials(
-                                                  editedCredentials, index),
-                                          credentials[index]),
+                                    return GestureDetector(
+                                      onLongPress: () {
+                                        showCupertinoModalPopup(
+                                          context: context,
+                                          builder: (context) =>
+                                              actionSheet(index),
+                                        );
+                                      },
+                                      child: CredentialsRow(
+                                        credentials: credentials[index],
+                                      ),
                                     );
                                   },
                                 ),
@@ -186,6 +191,36 @@ class _HomeState extends State<Home> {
     setState(() {
       credentials[index] = editedCredentials;
     });
+  }
+
+  Widget actionSheet(int index) {
+    return CupertinoActionSheet(
+      title: Text(credentials[index].websiteURL),
+      actions: [
+        CupertinoActionSheetAction(
+          onPressed: () {
+            Navigator.of(context).pop(); // dismiss action sheet
+            openEditCredentialsMenu(
+                (Credentials editedCredentials) =>
+                    editCredentials(editedCredentials, index),
+                credentials[index]);
+          },
+          child: const Text("Edit"),
+        ),
+        CupertinoActionSheetAction(
+          onPressed: () {
+            Navigator.of(context).pop(); // dismiss action sheet
+            deleteCredentials(credentials[index]);
+          },
+          isDestructiveAction: true,
+          child: const Text("Delete credentials"),
+        ),
+      ],
+      cancelButton: CupertinoActionSheetAction(
+        child: const Text('Cancel'),
+        onPressed: () => Navigator.of(context).pop(), // dismiss action sheet,
+      ),
+    );
   }
 
   Widget loadingWidget() {

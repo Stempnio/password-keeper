@@ -3,11 +3,8 @@ import 'package:password_keeper/model/credentials.dart';
 
 class CredentialsRow extends StatefulWidget {
   final Credentials credentials;
-  final Function edit;
 
-  const CredentialsRow(
-      {required this.credentials, required this.edit, Key? key})
-      : super(key: key);
+  const CredentialsRow({required this.credentials, Key? key}) : super(key: key);
 
   @override
   State<CredentialsRow> createState() => _CredentialsRowState();
@@ -64,12 +61,6 @@ class _CredentialsRowState extends State<CredentialsRow> {
                     ? Icons.visibility_off
                     : Icons.visibility,
               ),
-            ),
-            IconButton(
-              onPressed: () {
-                widget.edit();
-              },
-              icon: const Icon(Icons.more_vert),
             ),
           ],
         ),

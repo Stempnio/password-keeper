@@ -21,13 +21,15 @@ class _HomeState extends State<Home> {
   bool loadingCredentials = true;
   bool loadingError = false;
 
+  final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
+
   void getCredentials() async {
     try {
       List<Credentials> result = await credentialsRepository.getCredentials();
       setState(() {
         // TODO: temporary - deep cloning the array
-        credentials = [];
-        credentials = [...result];
+        _credentials = [];
+        _credentials = [...result];
         loadingCredentials = false;
         loadingError = false;
       });
@@ -40,7 +42,7 @@ class _HomeState extends State<Home> {
   }
 
   // cached credentials
-  List<Credentials> credentials = [];
+  List<Credentials> _credentials = [];
 
   @override
   void initState() {
@@ -92,23 +94,31 @@ class _HomeState extends State<Home> {
                     const TopCaption(),
                     loadingCredentials
                         ? loadingWidget()
-                        : credentials.isEmpty
+                        : _credentials.isEmpty
                             ? const Text('No passwords yet')
                             : Expanded(
-                                child: ListView.builder(
-                                  itemCount: credentials.length,
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    return GestureDetector(
-                                      onLongPress: () {
-                                        showCupertinoModalPopup(
-                                          context: context,
-                                          builder: (context) =>
-                                              actionSheet(index),
-                                        );
-                                      },
-                                      child: CredentialsRow(
-                                        credentials: credentials[index],
+                                child: AnimatedList(
+                                  key: _listKey,
+                                  initialItemCount: _credentials.length,
+                                  itemBuilder: (context, index, animation) {
+                                    return SlideTransition(
+                                      position: animation.drive(
+                                        Tween(
+                                          begin: Offset(1, 0),
+                                          end: Offset(0, 0),
+                                        ),
+                                      ),
+                                      child: GestureDetector(
+                                        onLongPress: () {
+                                          showCupertinoModalPopup(
+                                            context: context,
+                                            builder: (context) =>
+                                                actionSheet(index),
+                                          );
+                                        },
+                                        child: CredentialsRow(
+                                          credentials: _credentials[index],
+                                        ),
                                       ),
                                     );
                                   },
@@ -172,30 +182,40 @@ class _HomeState extends State<Home> {
     );
   }
 
-  void deleteCredentials(Credentials credentialsToBeRemoved) {
+  void deleteCredentials(int index) {
+    final removedCredentials = _credentials[index];
+
     setState(() {
-      credentialsRepository.deleteCredentials(credentialsToBeRemoved);
-      credentials.remove(credentialsToBeRemoved);
+      credentialsRepository
+          .deleteCredentials(removedCredentials); // TODO: deleting by index?
+      _credentials.removeAt(index);
     });
+    _listKey.currentState?.removeItem(
+      index,
+      (context, animation) => SizeTransition(
+          sizeFactor: animation.drive(Tween<double>(begin: 0, end: 1)),
+          child: CredentialsRow(credentials: removedCredentials)),
+    );
   }
 
   void addCredentials(Credentials newCredentials) {
     credentialsRepository.addCredentials(newCredentials);
     setState(() {
-      credentials.add(newCredentials);
+      _credentials.add(newCredentials);
     });
+    _listKey.currentState?.insertItem(_credentials.length - 1);
   }
 
   void editCredentials(Credentials editedCredentials, int index) {
     credentialsRepository.modifyCredentials(index, editedCredentials);
     setState(() {
-      credentials[index] = editedCredentials;
+      _credentials[index] = editedCredentials;
     });
   }
 
   Widget actionSheet(int index) {
     return CupertinoActionSheet(
-      title: Text(credentials[index].websiteURL),
+      title: Text(_credentials[index].websiteURL),
       actions: [
         CupertinoActionSheetAction(
           onPressed: () {
@@ -203,14 +223,14 @@ class _HomeState extends State<Home> {
             openEditCredentialsMenu(
                 (Credentials editedCredentials) =>
                     editCredentials(editedCredentials, index),
-                credentials[index]);
+                _credentials[index]);
           },
           child: const Text("Edit"),
         ),
         CupertinoActionSheetAction(
           onPressed: () {
             Navigator.of(context).pop(); // dismiss action sheet
-            deleteCredentials(credentials[index]);
+            deleteCredentials(index);
           },
           isDestructiveAction: true,
           child: const Text("Delete credentials"),

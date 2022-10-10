@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:animated_toggle_switch/animated_toggle_switch.dart';
+import 'package:password_keeper/theme/theme_manager.dart';
 
 class Settings extends StatefulWidget {
   const Settings({Key? key}) : super(key: key);
@@ -10,6 +10,16 @@ class Settings extends StatefulWidget {
 
 class _SettingsState extends State<Settings> {
   final _formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    ThemeManager().addListener(() {
+      if (mounted) {
+        setState(() {});
+      }
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -91,11 +101,12 @@ class _SettingsState extends State<Settings> {
                     ),
                   ),
                   const Spacer(),
-                  AnimatedToggleSwitch<String>.rolling(
-                    values: const ["on", "off"],
-                    current: "on",
-                    height: 30,
-                  )
+                  Switch(
+                    value: ThemeManager().themeMode == ThemeMode.dark,
+                    onChanged: (newValue) {
+                      ThemeManager().toggleThemeMode(!newValue);
+                    },
+                  ),
                 ],
               ),
               const Divider(),

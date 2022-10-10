@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:password_keeper/theme/theme_constants.dart';
+import 'package:password_keeper/theme/theme_manager.dart';
 import 'package:password_keeper/view/home/home.dart';
 import 'package:password_keeper/view/settings/settings.dart';
 
@@ -21,8 +23,23 @@ class _PasswordKeeperAppState extends State<PasswordKeeperApp> {
   ];
 
   @override
+  void initState() {
+    ThemeManager().addListener(() {
+      if (mounted) {
+        setState(() {
+
+        });
+      }
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: lightTheme,
+      darkTheme: darkTheme,
+      themeMode: ThemeManager().themeMode,
       home: Scaffold(
         body: IndexedStack(
           index: currentScreen,
@@ -30,9 +47,10 @@ class _PasswordKeeperAppState extends State<PasswordKeeperApp> {
         ),
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: currentScreen,
-          onTap: (index) => setState(() {
-            currentScreen = index;
-          }),
+          onTap: (index) =>
+              setState(() {
+                currentScreen = index;
+              }),
           items: const [
             BottomNavigationBarItem(
               icon: Icon(Icons.home),

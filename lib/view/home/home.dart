@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:password_keeper/model/credentials.dart';
 import 'package:password_keeper/repository/credentials_repository.dart';
+import 'package:password_keeper/theme/theme_manager.dart';
 import 'package:password_keeper/utils/credentials_utils.dart';
 import 'package:password_keeper/view/home/edit_credentials.dart';
 import 'package:password_keeper/view/home/edit_credentials_route.dart';
@@ -46,6 +47,11 @@ class _HomeState extends State<Home> {
 
   @override
   void initState() {
+    ThemeManager().addListener(() {
+      if (mounted) {
+        setState(() {});
+      }
+    });
     super.initState();
     getCredentials();
   }
@@ -54,21 +60,28 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(20),
+          ),
+        ),
         title: const Text('Password Keeper'),
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 20),
-            child: GestureDetector(
+            child: InkWell(
               onTap: () {},
-              child: const Icon(
-                Icons.search,
-                size: 28,
+              child: Ink(
+                child: const Icon(
+                  Icons.search,
+                  size: 28,
+                ),
               ),
             ),
           ),
           Padding(
             padding: const EdgeInsets.only(right: 20),
-            child: GestureDetector(
+            child: InkWell(
               onTap: () {
                 setState(() {
                   loadingCredentials = true;
@@ -108,7 +121,7 @@ class _HomeState extends State<Home> {
                                           end: Offset(0, 0),
                                         ),
                                       ),
-                                      child: GestureDetector(
+                                      child: InkWell(
                                         onLongPress: () {
                                           showCupertinoModalPopup(
                                             context: context,
@@ -130,7 +143,7 @@ class _HomeState extends State<Home> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         heroTag: 'add_credentials',
-        backgroundColor: Colors.blueAccent,
+        // backgroundColor: Colors.blueAccent,
         onPressed: () {
           openEditCredentialsMenu(addCredentials, emptyCredentials());
         },
@@ -256,7 +269,9 @@ class _HomeState extends State<Home> {
           height: 30,
         ),
         LoadingAnimationWidget.staggeredDotsWave(
-          color: Colors.black,
+          color: ThemeManager().themeMode == ThemeMode.light
+              ? Colors.blueAccent
+              : Colors.white,
           size: 70,
         ),
       ],

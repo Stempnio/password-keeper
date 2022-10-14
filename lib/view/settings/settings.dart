@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:password_keeper/theme/theme_manager.dart';
+import 'package:password_keeper/view/common/card_icon.dart';
 
 class Settings extends StatefulWidget {
   const Settings({Key? key}) : super(key: key);
@@ -43,55 +44,6 @@ class _SettingsState extends State<Settings> {
                   Spacer(),
                 ],
               ),
-              const Divider(),
-              Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: Column(
-                    children: [
-                      TextFormField(
-                        decoration: const InputDecoration(
-                          hintText: 'Enter new nickname',
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Nickname can not be empty';
-                          } else {
-                            return null;
-                          }
-                        },
-                      ),
-                      TextFormField(
-                        obscureText: true,
-                        decoration: const InputDecoration(
-                          hintText: 'Enter new password',
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Password can not be empty';
-                          } else {
-                            return null;
-                          }
-                        },
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      ElevatedButton(
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('Success')),
-                            );
-                          }
-                        },
-                        child: const Text('submit'),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              const Divider(),
               Row(
                 children: [
                   const Text(
@@ -110,6 +62,21 @@ class _SettingsState extends State<Settings> {
                 ],
               ),
               const Divider(),
+              Flexible(
+                child: GridView.count(
+                  crossAxisCount: 2,
+                  children: const [
+                    CardIcon(
+                      text: "Change PIN",
+                      icon: Icons.lock,
+                    ),
+                    CardIcon(
+                      text: "Privacy",
+                      icon: Icons.privacy_tip_rounded,
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ),

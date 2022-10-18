@@ -4,10 +4,10 @@ import 'package:password_keeper/model/credentials.dart';
 import 'package:password_keeper/repository/credentials_repository.dart';
 import 'package:password_keeper/theme/theme_manager.dart';
 import 'package:password_keeper/utils/credentials_utils.dart';
-import 'package:password_keeper/view/home/edit_credentials.dart';
-import 'package:password_keeper/view/home/edit_credentials_route.dart';
-import 'package:password_keeper/view/home/credentials_row.dart';
-import 'package:password_keeper/view/home/top_caption.dart';
+import 'package:password_keeper/home/view/edit_credentials.dart';
+import 'package:password_keeper/home/view/edit_credentials_route.dart';
+import 'package:password_keeper/home/view/credentials_row.dart';
+import 'package:password_keeper/home/view/top_caption.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class Home extends StatefulWidget {

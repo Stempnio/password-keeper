@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:password_keeper/theme/theme_manager.dart';
-import 'package:password_keeper/view/common/card_icon.dart';
+import 'package:password_keeper/reused_widgets/card_icon.dart';
 
 class Settings extends StatefulWidget {
   const Settings({Key? key}) : super(key: key);

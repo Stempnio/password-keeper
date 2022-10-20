@@ -1,0 +1,12 @@
+name: credentials_repository
+description: Dart package which manages the credentials.
+publish_to: none
+
+environment:
+  sdk: ">=2.17.0 <3.0.0"
+
+dependencies:
+  equatable: ^2.0.0
+
+dev_dependencies:
+  very_good_analysis: ^3.0.1

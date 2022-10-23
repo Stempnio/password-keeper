@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:password_keeper/home/home.dart';
 import 'package:password_keeper/settings/settings.dart';
 import 'package:password_keeper/theme/theme.dart';
@@ -18,21 +19,10 @@ class _AppState extends State<App> {
   ];
 
   @override
-  void initState() {
-    ThemeManager().addListener(() {
-      if (mounted) {
-        setState(() {});
-      }
-    });
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    ThemeCubit themeCubit = BlocProvider.of<ThemeCubit>(context, listen: true);
     return MaterialApp(
-      theme: lightTheme,
-      darkTheme: darkTheme,
-      themeMode: ThemeManager().themeMode,
+      theme: themeCubit.isDark ? ThemeData.dark() : ThemeData.light(),
       home: Scaffold(
         body: IndexedStack(
           index: currentScreen,

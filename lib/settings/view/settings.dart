@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:password_keeper/theme/theme_manager.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:password_keeper/reused_widgets/card_icon.dart';
+
+import 'package:password_keeper/theme/theme_cubit.dart';
 
 class Settings extends StatefulWidget {
   const Settings({Key? key}) : super(key: key);
@@ -13,17 +15,8 @@ class _SettingsState extends State<Settings> {
   final _formKey = GlobalKey<FormState>();
 
   @override
-  void initState() {
-    ThemeManager().addListener(() {
-      if (mounted) {
-        setState(() {});
-      }
-    });
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    ThemeCubit themeCubit = BlocProvider.of<ThemeCubit>(context, listen: true);
     return Padding(
       padding: const EdgeInsets.fromLTRB(30, 40, 30, 30),
       child: Form(
@@ -54,9 +47,9 @@ class _SettingsState extends State<Settings> {
                   ),
                   const Spacer(),
                   Switch(
-                    value: ThemeManager().themeMode == ThemeMode.dark,
+                    value: themeCubit.isDark,
                     onChanged: (newValue) {
-                      ThemeManager().toggleThemeMode(!newValue);
+                      context.read<ThemeCubit>().toggleThemeMode();
                     },
                   ),
                 ],

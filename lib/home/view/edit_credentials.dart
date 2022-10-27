@@ -1,15 +1,17 @@
+import 'package:credentials_repository/credentials_repository.dart';
 import 'package:flutter/material.dart';
-
-import 'package:password_keeper/model/credentials.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:password_keeper/credentials/bloc/credentials_bloc.dart';
 
 class EditCredentials extends StatefulWidget {
   const EditCredentials({
     Key? key,
     required this.actionHandler,
-    required this.credentials,
+    required this.inputCredentials,
   }) : super(key: key);
-  final Function actionHandler;
-  final Credentials credentials;
+
+  final Function(Credentials credentials) actionHandler;
+  final Credentials inputCredentials;
 
   @override
   State<EditCredentials> createState() => _EditCredentialsState();
@@ -18,12 +20,9 @@ class EditCredentials extends StatefulWidget {
 class _EditCredentialsState extends State<EditCredentials> {
   final _formKey = GlobalKey<FormState>();
 
-  // credentials that are used when invoking actionHandler function
-  Credentials credentials = Credentials(
-    websiteURL: "",
-    login: "",
-    passwordHash: "",
-  );
+  String websiteURL = "";
+  String login = "";
+  String passwordHash = "";
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +41,7 @@ class _EditCredentialsState extends State<EditCredentials> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       TextFormField(
-                        initialValue: widget.credentials.websiteURL,
+                        initialValue: widget.inputCredentials.websiteURL,
                         decoration: const InputDecoration(
                           hintText: 'Website URL',
                         ),
@@ -51,14 +50,14 @@ class _EditCredentialsState extends State<EditCredentials> {
                             return 'Website URL can not be empty';
                           } else {
                             setState(() {
-                              credentials.websiteURL = value;
+                              websiteURL = value;
                             });
                             return null;
                           }
                         },
                       ),
                       TextFormField(
-                        initialValue: widget.credentials.login,
+                        initialValue: widget.inputCredentials.login,
                         decoration: const InputDecoration(
                           hintText: 'Username',
                         ),
@@ -67,14 +66,14 @@ class _EditCredentialsState extends State<EditCredentials> {
                             return 'Username can not be empty';
                           } else {
                             setState(() {
-                              credentials.login = value;
+                              login = value;
                             });
                             return null;
                           }
                         },
                       ),
                       TextFormField(
-                        initialValue: widget.credentials.passwordHash,
+                        initialValue: widget.inputCredentials.passwordHash,
                         obscureText: true,
                         decoration: const InputDecoration(
                           hintText: 'Password',
@@ -84,7 +83,7 @@ class _EditCredentialsState extends State<EditCredentials> {
                             return 'Password can not be empty';
                           } else {
                             setState(() {
-                              credentials.passwordHash = value;
+                              passwordHash = value;
                             });
                             return null;
                           }
@@ -97,7 +96,13 @@ class _EditCredentialsState extends State<EditCredentials> {
                       ElevatedButton(
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
-                            widget.actionHandler(credentials);
+                            widget.actionHandler(
+                              Credentials(
+                                websiteURL: websiteURL,
+                                login: login,
+                                passwordHash: passwordHash,
+                              ),
+                            );
                             Navigator.pop(context);
                           }
                         },

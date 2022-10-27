@@ -28,7 +28,7 @@ class Credentials extends Equatable {
   }
 }
 
-extension on Credentials {
+extension CredentialsUtils on Credentials {
   static Credentials emptyCredentials() =>
       Credentials(websiteURL: "", login: "", passwordHash: "");
 }

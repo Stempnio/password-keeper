@@ -15,38 +15,37 @@ class CredentialsRepository {
 
   Future<List<Credentials>> getCredentials() async {
     return Future.delayed(
-      const Duration(milliseconds: 300),
-      () => _credentials,
+      const Duration(milliseconds: 500),
+      () => [..._credentials],
     );
   }
 
-  bool deleteCredentials(Credentials el) {
-    try {
-      _credentials.remove(el);
-      return true;
-    } catch (e) {
-      print(e);
-      return false;
-    }
+  Future<void> deleteCredentials(Credentials el) async {
+    // try {
+    _credentials.remove(el);
+    // } catch (e) {
+    //   print(e);
+    //   return false;
+    // }
   }
 
-  bool modifyCredentials(int index, Credentials el) {
-    try {
-      _credentials[index] = el;
-      return true;
-    } catch (e) {
-      print(e);
-      return false;
-    }
+  Future<void> modifyCredentials(int index, Credentials el) async {
+    // try {
+    _credentials[index] = el;
+    //   return true;
+    // } catch (e) {
+    //   print(e);
+    //   return false;
+    // }
   }
 
-  bool addCredentials(Credentials el) {
-    try {
-      _credentials.add(el);
-      return true;
-    } catch (e) {
-      print(e);
-      return false;
-    }
+  Future<void> addCredentials(Credentials el) async {
+    // try {
+    _credentials.add(el);
+    //   return true;
+    // } catch (e) {
+    //   print(e);
+    //   return false;
+    // }
   }
 }

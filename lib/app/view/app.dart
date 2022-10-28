@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:password_keeper/authentication/authentication.dart';
 import 'package:password_keeper/home/home.dart';
 import 'package:password_keeper/settings/settings.dart';
 import 'package:password_keeper/theme/theme.dart';
@@ -23,27 +24,40 @@ class _AppState extends State<App> {
     ThemeCubit themeCubit = BlocProvider.of<ThemeCubit>(context, listen: true);
     return MaterialApp(
       theme: themeCubit.isDark ? ThemeData.dark() : ThemeData.light(),
-      home: Scaffold(
-        body: IndexedStack(
-          index: currentScreen,
-          children: screens,
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          currentIndex: currentScreen,
-          onTap: (index) => setState(() {
-            currentScreen = index;
-          }),
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Home',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.settings),
-              label: 'Settings',
-            ),
-          ],
-        ),
+      home: BlocConsumer<AuthenticationBloc, AuthenticationState>(
+        listener: (context, state) {
+          if (state.status == AuthenticationStatus.error) {
+            // show snackbar
+          }
+        },
+        builder: (context, state) {
+          if (state.status == AuthenticationStatus.authenticated) {
+            return Scaffold(
+              body: IndexedStack(
+                index: currentScreen,
+                children: screens,
+              ),
+              bottomNavigationBar: BottomNavigationBar(
+                currentIndex: currentScreen,
+                onTap: (index) => setState(() {
+                  currentScreen = index;
+                }),
+                items: const [
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.home),
+                    label: 'Home',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.settings),
+                    label: 'Settings',
+                  ),
+                ],
+              ),
+            );
+          } else {
+            return const LogInPage();
+          }
+        },
       ),
     );
   }

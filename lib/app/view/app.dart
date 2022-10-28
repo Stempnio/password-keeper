@@ -27,7 +27,11 @@ class _AppState extends State<App> {
       home: BlocConsumer<AuthenticationBloc, AuthenticationState>(
         listener: (context, state) {
           if (state.status == AuthenticationStatus.error) {
-            // show snackbar
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text("Authentication failed!"),
+              ),
+            );
           }
         },
         builder: (context, state) {

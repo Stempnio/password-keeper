@@ -1,8 +1,7 @@
 import 'dart:async';
-
 import 'package:authentication_repository/authentication_repository.dart';
-import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'authentication_event.dart';
 
@@ -41,5 +40,12 @@ class AuthenticationBloc
 
   void _onSetAuthenticationData(AuthenticationEvent event, Emitter emit) {}
 
-  void _onLogOut(AuthenticationEvent event, Emitter emit) {}
+  void _onLogOut(AuthenticationEvent event, Emitter emit) {
+    try {
+      emit(const AuthenticationState(
+          status: AuthenticationStatus.unauthenticated));
+    } catch (error) {
+      emit(const AuthenticationState(status: AuthenticationStatus.error));
+    }
+  }
 }

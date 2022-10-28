@@ -8,6 +8,7 @@ import 'package:password_keeper/home/view/edit_credentials_route.dart';
 import 'package:password_keeper/credentials/view/credentials_row.dart';
 import 'package:password_keeper/home/widgets/loading_widget.dart';
 import 'package:password_keeper/home/widgets/top_caption.dart';
+import 'package:password_keeper/authentication/bloc/authentication_bloc.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -144,7 +145,9 @@ class _HomeState extends State<Home> {
                   ),
                   const Divider(),
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      context.read<AuthenticationBloc>().add(LogOut());
+                    },
                     child: const Text('log out'),
                   )
                 ],

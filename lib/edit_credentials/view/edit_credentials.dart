@@ -1,7 +1,5 @@
 import 'package:credentials_repository/credentials_repository.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:password_keeper/credentials/bloc/credentials_bloc.dart';
 
 class EditCredentials extends StatefulWidget {
   const EditCredentials({

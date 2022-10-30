@@ -46,6 +46,7 @@ dependencies:
   authentication_repository:
     path: packages/authentication_repository
   glassmorphism: ^3.0.0
+  curved_navigation_bar: ^1.0.3
 
 dev_dependencies:
   flutter_test:

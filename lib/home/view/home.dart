@@ -24,79 +24,54 @@ class _HomeState extends State<Home> {
     return BlocBuilder<CredentialsBloc, CredentialsState>(
       builder: (context, state) {
         return Scaffold(
-          appBar: AppBar(
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.vertical(
-                bottom: Radius.circular(20),
-              ),
-            ),
-            title: const Text('Password Keeper'),
-            actions: [
-              Padding(
-                padding: const EdgeInsets.only(right: 20),
-                child: InkWell(
-                  onTap: () {},
-                  child: Ink(
-                    child: const Icon(
-                      Icons.search,
-                      size: 28,
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(right: 20),
-                child: InkWell(
-                  onTap: () {
-                    context.read<CredentialsBloc>().add(CredentialsFetched());
-                  },
-                  child: const Icon(
-                    Icons.refresh,
-                    size: 28,
-                  ),
-                ),
-              )
-            ],
-          ),
-          body: Padding(
-            padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-            child: state.status == CredentialsStatus.failure
-                ? const FetchCredentialsError()
-                : Center(
-                    child: Column(
-                      children: [
-                        const TopCaption(),
-                        state.status == CredentialsStatus.loading
-                            ? const LoadingWidget()
-                            : state.credentials.isEmpty
-                                ? const Text('No passwords yet')
-                                : Expanded(
-                                    child: ListView.builder(
-                                      itemCount: state.credentials.length,
-                                      itemBuilder: (context, index) {
-                                        return InkWell(
-                                          onLongPress: () {
-                                            showCupertinoModalPopup(
-                                              context: context,
-                                              builder: (_) =>
-                                                  CredentialsActionSheet(
+          body: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+              child: state.status == CredentialsStatus.failure
+                  ? const FetchCredentialsError()
+                  : Center(
+                      child: Column(
+                        children: [
+                          const TopCaption(),
+                          state.status == CredentialsStatus.loading
+                              ? const LoadingWidget()
+                              : state.credentials.isEmpty
+                                  ? const Text('No passwords yet')
+                                  : Expanded(
+                                      child: RefreshIndicator(
+                                        onRefresh: () async {
+                                          context
+                                              .read<CredentialsBloc>()
+                                              .add(CredentialsFetched());
+                                        },
+                                        child: ListView.builder(
+                                          itemCount: state.credentials.length,
+                                          itemBuilder: (context, index) {
+                                            return InkWell(
+                                              onLongPress: () {
+                                                showCupertinoModalPopup(
+                                                  context: context,
+                                                  builder: (_) =>
+                                                      CredentialsActionSheet(
+                                                    credentials: state
+                                                        .credentials[index],
+                                                    index: index,
+                                                  ),
+                                                );
+                                              },
+                                              child: CredentialsRow(
                                                 credentials:
                                                     state.credentials[index],
-                                                index: index,
                                               ),
                                             );
                                           },
-                                          child: CredentialsRow(
-                                            credentials:
-                                                state.credentials[index],
-                                          ),
-                                        );
-                                      },
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
+            ),
           ),
           floatingActionButton: FloatingActionButton.extended(
             heroTag: 'add_credentials',
@@ -126,7 +101,7 @@ class _HomeState extends State<Home> {
               ),
             ),
           ),
-          drawer: const HomeDrawer(),
+          // drawer: const HomeDrawer(),
         );
       },
     );

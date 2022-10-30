@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:password_keeper/authentication/authentication.dart';
 import 'package:password_keeper/reused_widgets/card_icon.dart';
 
 import 'package:password_keeper/theme/theme_cubit.dart';
@@ -37,6 +38,9 @@ class _SettingsState extends State<Settings> {
                   Spacer(),
                 ],
               ),
+              const SizedBox(
+                height: 10,
+              ),
               Row(
                 children: [
                   const Text(
@@ -58,14 +62,28 @@ class _SettingsState extends State<Settings> {
               Flexible(
                 child: GridView.count(
                   crossAxisCount: 2,
-                  children: const [
+                  children: [
                     CardIcon(
                       text: "Change PIN",
                       icon: Icons.lock,
+                      onTap: () {},
+                    ),
+                    CardIcon(
+                      text: "Log out",
+                      icon: Icons.logout,
+                      onTap: () {
+                        context.read<AuthenticationBloc>().add(LogOut());
+                      },
+                    ),
+                    CardIcon(
+                      text: "Notifications",
+                      icon: Icons.notifications,
+                      onTap: () {},
                     ),
                     CardIcon(
                       text: "Privacy",
                       icon: Icons.privacy_tip_rounded,
+                      onTap: () {},
                     ),
                   ],
                 ),

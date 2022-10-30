@@ -1,21 +1,17 @@
 import 'package:flutter/material.dart';
 
 class CardIcon extends StatelessWidget {
-  const CardIcon({required this.text, required this.icon, Key? key})
+  const CardIcon(
+      {required this.text, required this.icon, required this.onTap, Key? key})
       : super(key: key);
-
-  onTap(Function function) {
-    function();
-  }
-
   final IconData icon;
-
   final String text;
+  final Function() onTap;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: onTap,
       child: Ink(
         child: Card(
           elevation: 5,

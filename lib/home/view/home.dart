@@ -1,8 +1,6 @@
-import 'package:credentials_repository/credentials_repository.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:password_keeper/edit_credentials/edit_credentials.dart';
 import 'package:password_keeper/credentials/credentials.dart';
 import 'package:password_keeper/home/widgets/widgets.dart';
 
@@ -73,35 +71,6 @@ class _HomeState extends State<Home> {
                     ),
             ),
           ),
-          floatingActionButton: FloatingActionButton.extended(
-            heroTag: 'add_credentials',
-            onPressed: () {
-              Navigator.push(
-                context,
-                EditCredentialsRoute(
-                  builder: (context) => EditCredentials(
-                    inputCredentials: const Credentials(
-                        login: "", passwordHash: "", websiteURL: ""),
-                    actionHandler: (credentials) {
-                      context.read<CredentialsBloc>().add(
-                            CredentialsAdded(
-                              credentials: credentials,
-                            ),
-                          );
-                    },
-                  ),
-                ),
-              );
-            },
-            icon: const Icon(Icons.add),
-            label: const Text(
-              'Add',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-          // drawer: const HomeDrawer(),
         );
       },
     );

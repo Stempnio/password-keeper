@@ -5,6 +5,7 @@ import 'package:password_keeper/authentication/authentication.dart';
 import 'package:password_keeper/home/home.dart';
 import 'package:password_keeper/settings/settings.dart';
 import 'package:password_keeper/theme/theme.dart';
+import 'package:password_keeper/app/widgets/widgets.dart';
 
 class App extends StatefulWidget {
   const App({Key? key}) : super(key: key);
@@ -31,6 +32,7 @@ class _AppState extends State<App> {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
                 content: Text("Authentication failed!"),
+                duration: Duration(seconds: 1),
               ),
             );
           }
@@ -38,6 +40,8 @@ class _AppState extends State<App> {
         builder: (context, state) {
           if (state.status == AuthenticationStatus.authenticated) {
             return Scaffold(
+              floatingActionButtonLocation:
+                  FloatingActionButtonLocation.centerDocked,
               body: IndexedStack(
                 index: currentScreen,
                 children: screens,
@@ -55,6 +59,7 @@ class _AppState extends State<App> {
                   Icon(Icons.settings),
                 ],
               ),
+              floatingActionButton: const Fab(),
             );
           } else {
             return const LogInPage();

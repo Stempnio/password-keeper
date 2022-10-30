@@ -46,18 +46,14 @@ class _HomeState extends State<Home> {
                                             itemCount: state.credentials.length,
                                             itemBuilder: (context, index) {
                                               var separator = index == 0 ||
-                                                      index + 1 <
-                                                              state.credentials
-                                                                  .length &&
+                                                      state
+                                                              .credentials[
+                                                                  index - 1]
+                                                              .websiteURL[0] !=
                                                           state
-                                                                      .credentials[
-                                                                          index - 1]
-                                                                      .websiteURL[
-                                                                  0] !=
-                                                              state
-                                                                  .credentials[
-                                                                      index]
-                                                                  .websiteURL[0]
+                                                              .credentials[
+                                                                  index]
+                                                              .websiteURL[0]
                                                   ? Padding(
                                                       padding:
                                                           const EdgeInsets.all(

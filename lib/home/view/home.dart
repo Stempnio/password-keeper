@@ -2,13 +2,9 @@ import 'package:credentials_repository/credentials_repository.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:password_keeper/credentials/bloc/credentials_bloc.dart';
-import 'package:password_keeper/home/view/edit_credentials.dart';
-import 'package:password_keeper/home/view/edit_credentials_route.dart';
-import 'package:password_keeper/credentials/view/credentials_row.dart';
-import 'package:password_keeper/home/widgets/loading_widget.dart';
-import 'package:password_keeper/home/widgets/top_caption.dart';
-import 'package:password_keeper/authentication/bloc/authentication_bloc.dart';
+import 'package:password_keeper/edit_credentials/edit_credentials.dart';
+import 'package:password_keeper/credentials/credentials.dart';
+import 'package:password_keeper/home/widgets/widgets.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -65,7 +61,7 @@ class _HomeState extends State<Home> {
           body: Padding(
             padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
             child: state.status == CredentialsStatus.failure
-                ? errorWidget()
+                ? const FetchCredentialsError()
                 : Center(
                     child: Column(
                       children: [
@@ -82,9 +78,12 @@ class _HomeState extends State<Home> {
                                           onLongPress: () {
                                             showCupertinoModalPopup(
                                               context: context,
-                                              builder: (_) => actionSheet(
-                                                  state.credentials[index],
-                                                  index),
+                                              builder: (_) =>
+                                                  CredentialsActionSheet(
+                                                credentials:
+                                                    state.credentials[index],
+                                                index: index,
+                                              ),
                                             );
                                           },
                                           child: CredentialsRow(
@@ -127,93 +126,9 @@ class _HomeState extends State<Home> {
               ),
             ),
           ),
-          drawer: Drawer(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(
-                    height: 80,
-                  ),
-                  const Text(
-                    'Hello user!',
-                    style: TextStyle(
-                      fontSize: 25,
-                    ),
-                  ),
-                  const Divider(),
-                  ElevatedButton(
-                    onPressed: () {
-                      context.read<AuthenticationBloc>().add(LogOut());
-                    },
-                    child: const Text('log out'),
-                  )
-                ],
-              ),
-            ),
-          ),
+          drawer: const HomeDrawer(),
         );
       },
-    );
-  }
-
-  Widget actionSheet(Credentials credentials, int? index) {
-    return CupertinoActionSheet(
-      // title: Text(_credentials[index].websiteURL),
-
-      actions: [
-        CupertinoActionSheetAction(
-          onPressed: () {
-            Navigator.of(context).pop(); // dismiss action sheet
-            Navigator.push(
-              context,
-              EditCredentialsRoute(
-                builder: (context) => EditCredentials(
-                  inputCredentials: credentials,
-                  actionHandler: (editedCredentials) {
-                    context.read<CredentialsBloc>().add(
-                          CredentialsEdited(
-                            index: index ?? -1,
-                            credentials: editedCredentials,
-                          ),
-                        );
-                  },
-                ),
-              ),
-            );
-          },
-          child: const Text("Edit"),
-        ),
-        CupertinoActionSheetAction(
-          onPressed: () {
-            Navigator.of(context).pop(); // dismiss action sheet
-            context
-                .read<CredentialsBloc>()
-                .add(CredentialsDeleted(credentials: credentials));
-          },
-          isDestructiveAction: true,
-          child: const Text("Delete credentials"),
-        ),
-      ],
-      cancelButton: CupertinoActionSheetAction(
-        child: const Text('Cancel'),
-        onPressed: () => Navigator.of(context).pop(), // dismiss action sheet,
-      ),
-    );
-  }
-
-  Widget errorWidget() {
-    return Column(
-      children: const [
-        Text(
-          'Error while downloading data, please try again',
-          style: TextStyle(
-            fontSize: 15,
-          ),
-        )
-      ],
     );
   }
 }

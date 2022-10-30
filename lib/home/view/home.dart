@@ -43,27 +43,68 @@ class _HomeState extends State<Home> {
                                               .add(CredentialsFetched());
                                         },
                                         child: ListView.builder(
-                                          itemCount: state.credentials.length,
-                                          itemBuilder: (context, index) {
-                                            return InkWell(
-                                              onLongPress: () {
-                                                showCupertinoModalPopup(
-                                                  context: context,
-                                                  builder: (_) =>
-                                                      CredentialsActionSheet(
-                                                    credentials: state
-                                                        .credentials[index],
-                                                    index: index,
+                                            itemCount: state.credentials.length,
+                                            itemBuilder: (context, index) {
+                                              var separator = index == 0 ||
+                                                      index + 1 <
+                                                              state.credentials
+                                                                  .length &&
+                                                          state
+                                                                      .credentials[
+                                                                          index - 1]
+                                                                      .websiteURL[
+                                                                  0] !=
+                                                              state
+                                                                  .credentials[
+                                                                      index]
+                                                                  .websiteURL[0]
+                                                  ? Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              8.0),
+                                                      child: Align(
+                                                        alignment: Alignment
+                                                            .centerLeft,
+                                                        child: Text(
+                                                          state
+                                                              .credentials[
+                                                                  index]
+                                                              .websiteURL[0]
+                                                              .toUpperCase(),
+                                                          style:
+                                                              const TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            fontSize: 20,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    )
+                                                  : Container();
+                                              return Column(
+                                                children: [
+                                                  separator,
+                                                  InkWell(
+                                                    onLongPress: () {
+                                                      showCupertinoModalPopup(
+                                                        context: context,
+                                                        builder: (_) =>
+                                                            CredentialsActionSheet(
+                                                          credentials:
+                                                              state.credentials[
+                                                                  index],
+                                                          index: index,
+                                                        ),
+                                                      );
+                                                    },
+                                                    child: CredentialsRow(
+                                                      credentials: state
+                                                          .credentials[index],
+                                                    ),
                                                   ),
-                                                );
-                                              },
-                                              child: CredentialsRow(
-                                                credentials:
-                                                    state.credentials[index],
-                                              ),
-                                            );
-                                          },
-                                        ),
+                                                ],
+                                              );
+                                            }),
                                       ),
                                     ),
                         ],

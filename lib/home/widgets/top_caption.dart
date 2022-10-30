@@ -11,8 +11,10 @@ class TopCaption extends StatelessWidget {
           'Passwords are safe with us',
           style: TextStyle(
             fontSize: 20,
+            fontWeight: FontWeight.bold,
           ),
         ),
+        SizedBox(height: 5),
         Text(
           'Give them to us',
           style: TextStyle(

@@ -1,3 +1,4 @@
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:password_keeper/authentication/authentication.dart';
@@ -41,20 +42,17 @@ class _AppState extends State<App> {
                 index: currentScreen,
                 children: screens,
               ),
-              bottomNavigationBar: BottomNavigationBar(
-                currentIndex: currentScreen,
+              bottomNavigationBar: CurvedNavigationBar(
+                backgroundColor: Colors.transparent,
+                animationDuration: const Duration(milliseconds: 200),
+                color: Colors.black26,
+                index: currentScreen,
                 onTap: (index) => setState(() {
                   currentScreen = index;
                 }),
                 items: const [
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.home),
-                    label: 'Home',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.settings),
-                    label: 'Settings',
-                  ),
+                  Icon(Icons.home),
+                  Icon(Icons.settings),
                 ],
               ),
             );
@@ -63,6 +61,7 @@ class _AppState extends State<App> {
           }
         },
       ),
+      debugShowCheckedModeBanner: false,
     );
   }
 }

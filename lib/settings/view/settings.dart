@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:password_keeper/authentication/authentication.dart';
 import 'package:password_keeper/reused_widgets/card_icon.dart';
+import 'package:password_keeper/reused_widgets/set_passcode_page.dart';
 
 import 'package:password_keeper/theme/theme_cubit.dart';
 
@@ -66,7 +67,13 @@ class _SettingsState extends State<Settings> {
                     CardIcon(
                       text: "Change PIN",
                       icon: Icons.lock,
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const SetPasscodePage()),
+                        );
+                      },
                     ),
                     CardIcon(
                       text: "Log out",

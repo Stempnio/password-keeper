@@ -99,6 +99,12 @@ class _LogInPageState extends State<LogInPage> {
     );
   }
 
+  @override
+  void dispose() {
+    _passwordController.dispose();
+    super.dispose();
+  }
+
   void _submitPassword(String value) {
     context.read<AuthenticationBloc>().add(
           AuthenticateWithData(

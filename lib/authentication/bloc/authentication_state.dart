@@ -1,25 +1,26 @@
 part of 'authentication_bloc.dart';
 
-enum AuthenticationStatus { authenticated, pending, unauthenticated, error }
+enum AuthenticationStatus { authenticated, pending, unauthenticated }
 
 class AuthenticationState extends Equatable {
-  const AuthenticationState({required this.status});
+  const AuthenticationState({required this.status, this.message});
 
   final AuthenticationStatus status;
+  final String? message;
 
-  // final AuthenticationData authenticationData;
-
-  AuthenticationState copyWith(
-      AuthenticationStatus? status, AuthenticationData? data) {
+  AuthenticationState copyWith({
+    AuthenticationStatus? status,
+    String? errorMessage,
+  }) {
     return AuthenticationState(
       status: status ?? this.status,
-      // authenticationData: data ?? authenticationData,
+      message: errorMessage ?? '',
     );
   }
 
   @override
   List<Object?> get props => [
         status,
-        // authenticationData,
+        message,
       ];
 }

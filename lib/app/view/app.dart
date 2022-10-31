@@ -28,11 +28,11 @@ class _AppState extends State<App> {
       theme: themeCubit.isDark ? ThemeData.dark() : ThemeData.light(),
       home: BlocConsumer<AuthenticationBloc, AuthenticationState>(
         listener: (context, state) {
-          if (state.status == AuthenticationStatus.error) {
+          if (state.message != null) {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text("Authentication failed!"),
-                duration: Duration(seconds: 1),
+              SnackBar(
+                content: Text(state.message!),
+                duration: const Duration(seconds: 1),
               ),
             );
           }

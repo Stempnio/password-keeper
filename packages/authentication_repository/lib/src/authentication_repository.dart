@@ -1,20 +1,34 @@
+import 'package:shared_preferences/shared_preferences.dart';
 import 'models/models.dart';
 
 class AuthenticationRepository {
-  AuthenticationData _authenticationData = AuthenticationData(passCode: "0000");
-
-  Future<AuthenticationData> getAuthenticationData() async {
-    return _authenticationData;
-  }
-
-  Future<void> setAuthenticationData(AuthenticationData newAuthData) async {
+  Future<bool> setAuthenticationData(AuthenticationData newAuthData) async {
     if (newAuthData.passCode.length < 5) {
       throw Exception(["Password too short!"]);
     }
-    _authenticationData = newAuthData;
+
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString("passcode", newAuthData.passCode);
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
+
+  Future<bool> authenticationDataSaved() async {
+    return await _getPasscode() != null ? true : false;
   }
 
   Future<bool> authenticate(AuthenticationData authenticationData) async {
-    return _authenticationData == authenticationData;
+    String? passcode = await _getPasscode();
+    if (passcode == null) return false;
+
+    return AuthenticationData(passCode: passcode) == authenticationData;
+  }
+
+  Future<String?> _getPasscode() async {
+    final prefs = await SharedPreferences.getInstance();
+    return await prefs.getString("passcode");
   }
 }

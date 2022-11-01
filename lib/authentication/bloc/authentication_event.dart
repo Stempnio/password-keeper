@@ -4,6 +4,11 @@ abstract class AuthenticationEvent extends Equatable {
   const AuthenticationEvent();
 }
 
+class CheckIfAuthenticationDataIsSaved extends AuthenticationEvent {
+  @override
+  List<Object?> get props => [];
+}
+
 class SetAuthenticationData extends AuthenticationEvent {
   const SetAuthenticationData({required this.authenticationData});
 

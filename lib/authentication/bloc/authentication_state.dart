@@ -1,6 +1,6 @@
 part of 'authentication_bloc.dart';
 
-enum AuthenticationStatus { authenticated, pending, unauthenticated }
+enum AuthenticationStatus { initial, firstTime, authenticated, unauthenticated }
 
 class AuthenticationState extends Equatable {
   const AuthenticationState({required this.status, this.message});

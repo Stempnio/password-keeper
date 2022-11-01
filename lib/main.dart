@@ -36,7 +36,8 @@ void main() async {
         ),
         BlocProvider(
           create: (context) => AuthenticationBloc(
-              authenticationRepository: authenticationRepository),
+              authenticationRepository: authenticationRepository)
+            ..add(CheckIfAuthenticationDataIsSaved()),
         ),
       ],
       child: const App(),

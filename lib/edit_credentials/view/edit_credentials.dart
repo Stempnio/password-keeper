@@ -54,6 +54,7 @@ class _EditCredentialsState extends State<EditCredentials> {
                           }
                         },
                       ),
+                      const SizedBox(height: 10),
                       TextFormField(
                         initialValue: widget.inputCredentials.login,
                         decoration: const InputDecoration(
@@ -70,6 +71,7 @@ class _EditCredentialsState extends State<EditCredentials> {
                           }
                         },
                       ),
+                      const SizedBox(height: 10),
                       TextFormField(
                         initialValue: widget.inputCredentials.passwordHash,
                         obscureText: true,
@@ -87,10 +89,7 @@ class _EditCredentialsState extends State<EditCredentials> {
                           }
                         },
                       ),
-                      TextButton(
-                        onPressed: () {},
-                        child: const Text('Create strong password'),
-                      ),
+                      const SizedBox(height: 10),
                       ElevatedButton(
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {

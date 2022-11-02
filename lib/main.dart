@@ -1,25 +1,28 @@
-import 'package:authentication_repository/authentication_repository.dart';
 import 'package:credentials_repository/credentials_repository.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_ui_auth/firebase_ui_auth.dart';
+import 'firebase_options.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:password_keeper/app/app.dart';
-import 'package:password_keeper/authentication/authentication.dart';
 import 'package:password_keeper/credentials/bloc/credentials_bloc.dart';
 import 'package:password_keeper/theme/theme.dart';
 
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  FirebaseUIAuth.configureProviders([
+    EmailAuthProvider(),
+  ]);
+
   final credentialsRepository = CredentialsRepository();
-  final authenticationRepository = AuthenticationRepository();
 
   runApp(MultiRepositoryProvider(
     providers: [
       RepositoryProvider(
         create: (context) => credentialsRepository,
-      ),
-      RepositoryProvider(
-        create: (context) => authenticationRepository,
       ),
     ],
     child: MultiBlocProvider(
@@ -33,11 +36,6 @@ void main() async {
         ),
         BlocProvider(
           create: (context) => ThemeCubit(),
-        ),
-        BlocProvider(
-          create: (context) => AuthenticationBloc(
-              authenticationRepository: authenticationRepository)
-            ..add(CheckIfAuthenticationDataIsSaved()),
         ),
       ],
       child: const App(),

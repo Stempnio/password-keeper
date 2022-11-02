@@ -11,9 +11,6 @@ class Fab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(
-      backgroundColor: context.watch<ThemeCubit>().isDark
-          ? Colors.lightGreenAccent.withOpacity(0.85)
-          : Colors.lightGreen,
       heroTag: 'add_credentials',
       onPressed: () => Navigator.push(
         context,

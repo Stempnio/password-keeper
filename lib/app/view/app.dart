@@ -1,22 +1,71 @@
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:firebase_auth/firebase_auth.dart'
+    hide PhoneAuthProvider, EmailAuthProvider;
 import 'package:flutter/material.dart';
+import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:password_keeper/authentication/authentication.dart';
 import 'package:password_keeper/home/home.dart';
-import 'package:password_keeper/reused_widgets/set_passcode_page.dart';
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:password_keeper/app/widgets/widgets.dart';
 import 'package:password_keeper/settings/settings.dart';
 import 'package:password_keeper/theme/theme.dart';
-import 'package:password_keeper/app/widgets/widgets.dart';
 
-class App extends StatefulWidget {
+class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);
 
   @override
-  State<App> createState() => _AppState();
+  Widget build(BuildContext context) {
+    var providers = [EmailAuthProvider()];
+
+    return MaterialApp(
+      theme:
+          context.watch<ThemeCubit>().isDark ? AppTheme.dark : AppTheme.light,
+      initialRoute:
+          FirebaseAuth.instance.currentUser == null ? '/sign-in' : '/main',
+      routes: {
+        '/main': (context) => const AppView(),
+        '/sign-in': (context) => SignInScreen(
+              providers: providers,
+              actions: [
+                AuthStateChangeAction<SignedIn>((context, state) {
+                  Navigator.pushReplacementNamed(context, '/main');
+                }),
+              ],
+              headerBuilder: (context, constraints, _) => const Padding(
+                padding: EdgeInsets.all(10),
+                child: Center(
+                  child: Card(
+                    child: Padding(
+                      padding: EdgeInsets.all(15.0),
+                      child: Text(
+                        'Password keeper',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 30,
+                            letterSpacing: 3),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+        '/sign-up': (context) => RegisterScreen(
+              providers: providers,
+            )
+      },
+      debugShowCheckedModeBanner: false,
+    );
+  }
 }
 
-class _AppState extends State<App> {
-  int currentScreen = 0;
+class AppView extends StatefulWidget {
+  const AppView({Key? key}) : super(key: key);
+
+  @override
+  State<AppView> createState() => _AppViewState();
+}
+
+class _AppViewState extends State<AppView> {
+  int _currentScreen = 0;
   final screens = [
     const Home(),
     const Settings(),
@@ -24,58 +73,36 @@ class _AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
-    ThemeCubit themeCubit = BlocProvider.of<ThemeCubit>(context, listen: true);
-    return MaterialApp(
-      theme: themeCubit.isDark
-          ? ThemeData.dark(useMaterial3: true)
-          : ThemeData.light(useMaterial3: true),
-      home: BlocConsumer<AuthenticationBloc, AuthenticationState>(
-        listener: (context, state) {
-          if (state.message != null) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.message!),
-                duration: const Duration(seconds: 1),
-              ),
-            );
-          }
-        },
-        builder: (context, state) {
-          switch (state.status) {
-            case AuthenticationStatus.initial:
-              // TODO: splash screen?
-              return Container();
-            case AuthenticationStatus.firstTime:
-              return const SetPasscodePage();
-            case AuthenticationStatus.authenticated:
-              return Scaffold(
-                floatingActionButtonLocation:
-                    FloatingActionButtonLocation.centerDocked,
-                body: IndexedStack(
-                  index: currentScreen,
-                  children: screens,
-                ),
-                bottomNavigationBar: CurvedNavigationBar(
-                  backgroundColor: Colors.transparent,
-                  animationDuration: const Duration(milliseconds: 200),
-                  color: themeCubit.isDark ? Colors.black26 : Colors.cyan,
-                  index: currentScreen,
-                  onTap: (index) => setState(() {
-                    currentScreen = index;
-                  }),
-                  items: const [
-                    Icon(Icons.home),
-                    Icon(Icons.settings),
-                  ],
-                ),
-                floatingActionButton: const Fab(),
-              );
-            case AuthenticationStatus.unauthenticated:
-              return const LogInPage();
-          }
-        },
+    return Scaffold(
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      body: IndexedStack(
+        index: _currentScreen,
+        children: screens,
       ),
-      debugShowCheckedModeBanner: false,
+      bottomNavigationBar: BottomNavigationBar(
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: 'settings',
+          ),
+        ],
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
+        iconSize: 30,
+        currentIndex: _currentScreen,
+        onTap: _onItemTapped,
+      ),
+      floatingActionButton: const Fab(),
     );
+  }
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _currentScreen = index;
+    });
   }
 }

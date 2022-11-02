@@ -3,14 +3,14 @@ import 'package:credentials_repository/src/models/models.dart';
 
 class CredentialsRepository {
   List<Credentials> _credentials = [
+    Credentials(websiteURL: 'onet.pl', login: 'login', passwordHash: 'pass1'),
+    Credentials(websiteURL: 'oreo.pl', login: 'login', passwordHash: 'pass1'),
     Credentials(
-        websiteURL: 'website1.com', login: 'login', passwordHash: 'pass1'),
+        websiteURL: 'youtube.com', login: 'login', passwordHash: 'pass2'),
     Credentials(
-        websiteURL: 'website2.com', login: 'login', passwordHash: 'pass2'),
+        websiteURL: 'google.com', login: 'login', passwordHash: 'pass3'),
     Credentials(
-        websiteURL: 'website3.com', login: 'login', passwordHash: 'pass3'),
-    Credentials(
-        websiteURL: 'website4.com', login: 'login', passwordHash: 'pass4'),
+        websiteURL: 'gugogugo.com', login: 'login', passwordHash: 'pass4'),
   ];
 
   Future<List<Credentials>> getCredentials() async {

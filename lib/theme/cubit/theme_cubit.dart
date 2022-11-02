@@ -4,7 +4,7 @@ import 'package:equatable/equatable.dart';
 part 'theme_state.dart';
 
 class ThemeCubit extends Cubit<ThemeState> {
-  ThemeCubit() : super(const ThemeState(themeMode: ThemeMode.dark));
+  ThemeCubit() : super(const ThemeState(brightness: ThemeBrightness.dark));
 
   bool _isDark = true;
 
@@ -13,7 +13,7 @@ class ThemeCubit extends Cubit<ThemeState> {
   void toggleThemeMode() {
     _isDark = !_isDark;
     emit(isDark
-        ? ThemeState(themeMode: ThemeMode.dark)
-        : ThemeState(themeMode: ThemeMode.light));
+        ? const ThemeState(brightness: ThemeBrightness.dark)
+        : const ThemeState(brightness: ThemeBrightness.light));
   }
 }

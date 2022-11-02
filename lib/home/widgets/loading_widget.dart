@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
-import 'package:password_keeper/theme/theme_cubit.dart';
+import 'package:password_keeper/theme/cubit/theme_cubit.dart';
 
 class LoadingWidget extends StatelessWidget {
   const LoadingWidget({Key? key}) : super(key: key);
@@ -22,7 +22,7 @@ class LoadingWidget extends StatelessWidget {
           height: 30,
         ),
         LoadingAnimationWidget.staggeredDotsWave(
-          color: themeCubit.isDark ? Colors.blueAccent : Colors.white,
+          color: themeCubit.isDark ? Colors.greenAccent : Colors.blue,
           size: 70,
         ),
       ],

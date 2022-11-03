@@ -4,6 +4,10 @@ class AppTheme {
   static ThemeData get light {
     return ThemeData(
       scaffoldBackgroundColor: const Color(0xffF5F5FB),
+      bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
+      ),
       brightness: Brightness.light,
       inputDecorationTheme: InputDecorationTheme(
         border: OutlineInputBorder(
@@ -16,6 +20,10 @@ class AppTheme {
   static ThemeData get dark {
     return ThemeData(
       brightness: Brightness.dark,
+      bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
+      ),
       floatingActionButtonTheme: const FloatingActionButtonThemeData(
         backgroundColor: Colors.lightGreenAccent,
       ),

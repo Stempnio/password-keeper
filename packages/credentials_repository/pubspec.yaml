@@ -7,6 +7,8 @@ environment:
 
 dependencies:
   equatable: ^2.0.0
+  credentials_service:
+    path: ../credentials_service
 
 dev_dependencies:
   very_good_analysis: ^3.0.1

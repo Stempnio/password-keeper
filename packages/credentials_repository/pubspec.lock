@@ -8,6 +8,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.17.0"
+  credentials_service:
+    dependency: "direct main"
+    description:
+      path: "../credentials_service"
+      relative: true
+    source: path
+    version: "0.1.0+1"
   equatable:
     dependency: "direct main"
     description:

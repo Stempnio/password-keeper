@@ -1,0 +1,26 @@
+name: firestore_credentials_service
+description: Implementation of credentials service that uses Firebase Firestore
+version: 0.1.0+1
+publish_to: none
+
+environment:
+  sdk: ">=2.18.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  credentials_service:
+    path: ../credentials_service
+  equatable: ^2.0.0
+  json_serializable: ^6.5.4
+
+  firebase_core: ^2.1.1
+  firebase_auth: ^4.1.1
+  cloud_firestore: ^4.0.4
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  mocktail: ^0.3.0
+  build_runner: ^2.2.0
+  very_good_analysis: ^3.1.0

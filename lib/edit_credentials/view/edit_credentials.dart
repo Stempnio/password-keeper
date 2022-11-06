@@ -1,4 +1,4 @@
-import 'package:credentials_repository/credentials_repository.dart';
+import 'package:credentials_service/credentials_service.dart';
 import 'package:flutter/material.dart';
 
 class EditCredentials extends StatefulWidget {

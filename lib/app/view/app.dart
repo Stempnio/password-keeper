@@ -1,5 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart'
-    hide PhoneAuthProvider, EmailAuthProvider;
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:password_keeper/home/home.dart';

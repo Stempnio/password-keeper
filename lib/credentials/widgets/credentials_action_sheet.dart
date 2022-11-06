@@ -1,4 +1,4 @@
-import 'package:credentials_repository/credentials_repository.dart';
+import 'package:credentials_service/credentials_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:password_keeper/edit_credentials/edit_credentials.dart';
@@ -25,11 +25,11 @@ class CredentialsActionSheet extends StatelessWidget {
               EditCredentialsRoute(
                 builder: (context) => EditCredentials(
                   inputCredentials: credentials,
-                  actionHandler: (editedCredentials) {
+                  actionHandler: (newCredentials) {
                     context.read<CredentialsBloc>().add(
                           CredentialsEdited(
-                            index: index ?? -1,
-                            credentials: editedCredentials,
+                            editedCredentials: credentials,
+                            newCredentials: newCredentials,
                           ),
                         );
                   },

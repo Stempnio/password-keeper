@@ -1,7 +1,6 @@
 part of 'credentials_bloc.dart';
 
 enum CredentialsStatus {
-  initial,
   loading,
   success,
   failure,

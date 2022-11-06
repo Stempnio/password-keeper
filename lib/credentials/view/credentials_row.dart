@@ -1,5 +1,5 @@
+import 'package:credentials_service/credentials_service.dart';
 import 'package:flutter/material.dart';
-import 'package:credentials_repository/credentials_repository.dart';
 
 class CredentialsRow extends StatefulWidget {
   final Credentials credentials;

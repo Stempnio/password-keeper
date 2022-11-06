@@ -12,7 +12,7 @@ class CredentialsBloc extends Bloc<CredentialsEvent, CredentialsState> {
   CredentialsBloc({required CredentialsRepository credentialsRepository})
       : _credentialsRepository = credentialsRepository,
         super(const CredentialsState(
-          status: CredentialsStatus.initial,
+          status: CredentialsStatus.loading,
           credentials: [],
         )) {
     on<CredentialsSubscriptionRequested>(_onCredentialsSubscriptionRequested);
@@ -45,23 +45,35 @@ class CredentialsBloc extends Bloc<CredentialsEvent, CredentialsState> {
     CredentialsEdited event,
     Emitter<CredentialsState> emit,
   ) async {
-    await _credentialsRepository.editCredentials(
-      event.editedCredentials,
-      event.newCredentials,
-    );
+    try {
+      await _credentialsRepository.editCredentials(
+        event.editedCredentials,
+        event.newCredentials,
+      );
+    } on EditCredentialsException {
+      emit(state.copyWith(status: CredentialsStatus.failure));
+    }
   }
 
   Future<void> _onCredentialsAdded(
     CredentialsAdded event,
     Emitter<CredentialsState> emit,
   ) async {
-    await _credentialsRepository.addCredentials(event.credentials);
+    try {
+      await _credentialsRepository.addCredentials(event.credentials);
+    } on AddCredentialsException {
+      emit(state.copyWith(status: CredentialsStatus.failure));
+    }
   }
 
   Future<void> _onCredentialsDeleted(
     CredentialsDeleted event,
     Emitter<CredentialsState> emit,
   ) async {
-    await _credentialsRepository.deleteCredentials(event.credentials);
+    try {
+      await _credentialsRepository.deleteCredentials(event.credentials);
+    } on DeleteCredentialsException {
+      emit(state.copyWith(status: CredentialsStatus.failure));
+    }
   }
 }

@@ -18,8 +18,8 @@ Future<void> main() async {
     EmailAuthProvider(),
   ]);
 
-  const credentialsService = FirestoreCredentialsService();
-  const credentialsRepository =
+  final credentialsService = FirestoreCredentialsService();
+  final credentialsRepository =
       CredentialsRepository(service: credentialsService);
 
   runApp(MultiRepositoryProvider(

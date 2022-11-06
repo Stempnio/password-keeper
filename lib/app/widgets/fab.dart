@@ -1,9 +1,8 @@
+import 'package:credentials_service/credentials_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:password_keeper/edit_credentials/edit_credentials.dart';
 import 'package:password_keeper/credentials/credentials.dart';
-import 'package:credentials_repository/credentials_repository.dart';
-import 'package:password_keeper/theme/theme.dart';
 
 class Fab extends StatelessWidget {
   const Fab({Key? key}) : super(key: key);

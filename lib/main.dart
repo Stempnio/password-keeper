@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:password_keeper/app/app.dart';
 import 'package:password_keeper/credentials/bloc/credentials_bloc.dart';
 import 'package:password_keeper/theme/theme.dart';
+import 'package:firestore_credentials_service/firestore_credentials_service.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,7 +18,9 @@ Future<void> main() async {
     EmailAuthProvider(),
   ]);
 
-  final credentialsRepository = CredentialsRepository();
+  const credentialsService = FirestoreCredentialsService();
+  const credentialsRepository =
+      CredentialsRepository(service: credentialsService);
 
   runApp(MultiRepositoryProvider(
     providers: [
@@ -30,9 +33,7 @@ Future<void> main() async {
         BlocProvider(
           create: (context) =>
               CredentialsBloc(credentialsRepository: credentialsRepository)
-                ..add(
-                  CredentialsFetched(),
-                ),
+                ..add(CredentialsSubscriptionRequested()),
         ),
         BlocProvider(
           create: (context) => ThemeCubit(),

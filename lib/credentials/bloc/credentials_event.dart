@@ -4,15 +4,22 @@ abstract class CredentialsEvent extends Equatable {
   const CredentialsEvent();
 }
 
-class CredentialsEdited extends CredentialsEvent {
-  const CredentialsEdited({required this.index, required this.credentials});
+class CredentialsSubscriptionRequested extends CredentialsEvent {
+  @override
+  List<Object?> get props => [];
+}
 
-  final int index;
-  final Credentials credentials;
+class CredentialsEdited extends CredentialsEvent {
+  const CredentialsEdited(
+      {required this.editedCredentials, required this.newCredentials});
+
+  final Credentials editedCredentials;
+  final Credentials newCredentials;
 
   @override
   List<Object?> get props => [
-        credentials,
+        editedCredentials,
+        newCredentials,
       ];
 }
 
@@ -36,9 +43,4 @@ class CredentialsDeleted extends CredentialsEvent {
   List<Object?> get props => [
         credentials,
       ];
-}
-
-class CredentialsFetched extends CredentialsEvent {
-  @override
-  List<Object> get props => [];
 }

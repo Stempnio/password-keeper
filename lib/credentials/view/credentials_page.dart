@@ -1,8 +1,11 @@
+import 'package:anim_search_bar/anim_search_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:credentials_service/credentials_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:password_keeper/credentials/credentials.dart';
+import 'package:password_keeper/credentials/view/credentials_list.dart';
+import 'package:password_keeper/theme/cubit/theme_cubit.dart';
 
 class CredentialsPage extends StatelessWidget {
   const CredentialsPage({Key? key}) : super(key: key);
@@ -33,61 +36,71 @@ class CredentialsPage extends StatelessWidget {
         }
       },
     );
-    // return BlocBuilder<CredentialsBloc, CredentialsState>(
-    //     builder: (context, state) {
-    //   if (state.status == CredentialsStatus.failure) {
-    //     return const CredentialsError();
-    //   } else if (state.status == CredentialsStatus.loading) {
-    //     return const LoadingWidget();
-    //   } else {
-    //     if (state.credentials.isEmpty) {
-    //       return const NoCredentialsAdded();
-    //     } else {
-    //       return _CredentialsView(credentials: state.credentials);
-    //     }
-    //   }
-    // });
   }
 }
 
-class _CredentialsView extends StatelessWidget {
+class _CredentialsView extends StatefulWidget {
   const _CredentialsView({Key? key, required this.credentials})
       : super(key: key);
 
   final List<Credentials> credentials;
 
   @override
+  State<_CredentialsView> createState() => _CredentialsViewState();
+}
+
+class _CredentialsViewState extends State<_CredentialsView> {
+  final _textController = TextEditingController();
+
+  List<Credentials> filteredCredentials = [];
+
+  @override
+  void dispose() {
+    _textController.dispose();
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    filteredCredentials = widget.credentials;
+    _textController.addListener(() {
+      _filterCredentials(_textController.text);
+    });
+    super.initState();
+  }
+
+  void _filterCredentials(String pattern) {
+    setState(() {
+      filteredCredentials = widget.credentials
+          .where((c) => c.websiteURL.startsWith(pattern))
+          .toList();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: credentials.length,
-      itemBuilder: (context, index) {
-        var separator = index == 0 ||
-                credentials[index - 1].websiteURL[0] !=
-                    credentials[index].websiteURL[0]
-            ? LetterSeparator(
-                letter: credentials[index].websiteURL[0].toUpperCase(),
-              )
-            : Container();
-        return Column(
-          children: [
-            separator,
-            InkWell(
-              onLongPress: () {
-                showCupertinoModalPopup(
-                  context: context,
-                  builder: (_) => CredentialsActionSheet(
-                    credentials: credentials[index],
-                    index: index,
-                  ),
-                );
-              },
-              child: CredentialsRow(
-                credentials: credentials[index],
-              ),
-            ),
-          ],
-        );
-      },
+    return Column(
+      children: [
+        SizedBox(
+          height: 50,
+          child: AnimSearchBar(
+              rtl: true,
+              color: context.watch<ThemeCubit>().isDark
+                  ? const Color(0xff414348)
+                  : Colors.white,
+              style: const TextStyle(),
+              width: MediaQuery.of(context).size.width * 0.8,
+              textController: _textController,
+              onSuffixTap: () => setState(() {
+                    _textController.clear();
+                  })),
+        ),
+        Expanded(
+          child: CredentialsList(
+            credentials: filteredCredentials,
+          ),
+        ),
+      ],
     );
   }
 }

@@ -48,20 +48,28 @@ class _AppViewState extends State<AppView> {
         index: _currentScreen,
         children: screens,
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'settings',
-          ),
-        ],
-        iconSize: 30,
-        currentIndex: _currentScreen,
-        onTap: _onItemTapped,
+      bottomNavigationBar: BottomAppBar(
+        shape: const CircularNotchedRectangle(),
+        notchMargin: 8,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            IconButton(
+              onPressed: () => _onItemTapped(0),
+              icon: Icon(
+                Icons.home,
+                size: _iconSize(0),
+              ),
+            ),
+            IconButton(
+              onPressed: () => _onItemTapped(1),
+              icon: Icon(
+                Icons.settings,
+                size: _iconSize(1),
+              ),
+            )
+          ],
+        ),
       ),
       floatingActionButton: const Fab(),
     );
@@ -72,4 +80,6 @@ class _AppViewState extends State<AppView> {
       _currentScreen = index;
     });
   }
+
+  double _iconSize(int index) => _currentScreen == index ? 30 : 22;
 }

@@ -9,15 +9,19 @@ class LetterSeparator extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Align(
-        alignment: Alignment.centerLeft,
-        child: Text(
-          letter,
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 20,
+      child: Row(
+        children: [
+          Text(
+            letter,
+            style: Theme.of(context).textTheme.bodyLarge,
           ),
-        ),
+          const SizedBox(width: 10),
+          const Expanded(
+            child: Divider(
+              thickness: 2,
+            ),
+          ),
+        ],
       ),
     );
   }

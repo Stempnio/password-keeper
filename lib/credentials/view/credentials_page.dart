@@ -78,6 +78,14 @@ class _CredentialsViewState extends State<_CredentialsView> {
   }
 
   @override
+  void didUpdateWidget(covariant _CredentialsView oldWidget) {
+    if (oldWidget.credentials != widget.credentials) {
+      _filterCredentials(_textController.text);
+    }
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Column(
       children: [

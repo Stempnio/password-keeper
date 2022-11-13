@@ -5,6 +5,7 @@ import 'package:credentials_service/credentials_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:password_keeper/credentials/credentials.dart';
 import 'package:password_keeper/credentials/view/credentials_list.dart';
+import 'package:password_keeper/theme/cubit/theme_cubit.dart';
 
 class CredentialsPage extends StatelessWidget {
   const CredentialsPage({Key? key}) : super(key: key);
@@ -96,8 +97,9 @@ class _CredentialsViewState extends State<_CredentialsView> {
               const Spacer(),
               AnimSearchBar(
                   rtl: true,
-                  color: Colors.grey,
-                  style: const TextStyle(),
+                  color: context.watch<ThemeCubit>().isDark
+                      ? Theme.of(context).primaryColor
+                      : Colors.white,
                   width: MediaQuery.of(context).size.width * 0.7,
                   textController: _textController,
                   onSuffixTap: () => setState(() {

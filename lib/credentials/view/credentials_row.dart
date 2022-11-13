@@ -8,20 +8,28 @@ class CredentialsRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      title: Text(
-        credentials.websiteURL,
-        style: Theme.of(context).textTheme.bodyLarge,
+    return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15.0),
       ),
-      subtitle: Text(
-        credentials.login,
-        style: Theme.of(context).textTheme.bodyMedium,
-      ),
-      trailing: GestureDetector(
-        onTap: () {},
-        child: const Icon(
-          Icons.visibility,
-          size: 50,
+      child: ListTile(
+        title: Text(
+          credentials.websiteURL,
+          style: Theme.of(context)
+              .textTheme
+              .titleLarge
+              ?.copyWith(fontWeight: FontWeight.bold),
+        ),
+        subtitle: Text(
+          credentials.login,
+          style: Theme.of(context).textTheme.titleLarge,
+        ),
+        trailing: GestureDetector(
+          onTap: () {},
+          child: const Icon(
+            Icons.visibility,
+            size: 50,
+          ),
         ),
       ),
     );

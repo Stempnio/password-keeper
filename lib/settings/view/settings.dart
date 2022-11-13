@@ -18,13 +18,10 @@ class Settings extends StatelessWidget {
           // mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Row(
-              children: const [
+              children: [
                 Text(
                   "Settings",
-                  style: TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: Theme.of(context).textTheme.headlineLarge,
                 ),
                 Spacer(),
               ],
@@ -34,11 +31,11 @@ class Settings extends StatelessWidget {
             ),
             Row(
               children: [
-                const Text(
+                Text(
                   "Dark mode",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
                 ),
                 const Spacer(),
                 Switch(

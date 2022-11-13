@@ -13,7 +13,7 @@ class LetterSeparator extends StatelessWidget {
         children: [
           Text(
             letter,
-            style: Theme.of(context).textTheme.headlineLarge,
+            style: Theme.of(context).textTheme.headlineMedium,
           ),
           const SizedBox(width: 10),
           const Expanded(

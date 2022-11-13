@@ -52,7 +52,7 @@ class _AppViewState extends State<AppView> {
         shape: const CircularNotchedRectangle(),
         notchMargin: 8,
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             IconButton(
               onPressed: () => _onItemTapped(0),
@@ -81,5 +81,5 @@ class _AppViewState extends State<AppView> {
     });
   }
 
-  double _iconSize(int index) => _currentScreen == index ? 30 : 22;
+  double _iconSize(int index) => _currentScreen == index ? 35 : 25;
 }

@@ -38,6 +38,7 @@ class CredentialsList extends StatelessWidget {
                 credentials: credentials[index],
               ),
             ),
+            const SizedBox(height: 10),
           ],
         );
       },

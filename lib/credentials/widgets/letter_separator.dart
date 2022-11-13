@@ -13,13 +13,11 @@ class LetterSeparator extends StatelessWidget {
         children: [
           Text(
             letter,
-            style: Theme.of(context).textTheme.bodyLarge,
+            style: Theme.of(context).textTheme.headlineLarge,
           ),
           const SizedBox(width: 10),
           const Expanded(
-            child: Divider(
-              thickness: 2,
-            ),
+            child: Divider(thickness: 4),
           ),
         ],
       ),

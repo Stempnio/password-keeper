@@ -5,7 +5,6 @@ import 'package:credentials_service/credentials_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:password_keeper/credentials/credentials.dart';
 import 'package:password_keeper/credentials/view/credentials_list.dart';
-import 'package:password_keeper/theme/cubit/theme_cubit.dart';
 
 class CredentialsPage extends StatelessWidget {
   const CredentialsPage({Key? key}) : super(key: key);
@@ -91,18 +90,23 @@ class _CredentialsViewState extends State<_CredentialsView> {
       children: [
         SizedBox(
           height: 50,
-          child: AnimSearchBar(
-              rtl: true,
-              color: context.watch<ThemeCubit>().isDark
-                  ? const Color(0xff414348)
-                  : Colors.white,
-              style: const TextStyle(),
-              width: MediaQuery.of(context).size.width * 0.8,
-              textController: _textController,
-              onSuffixTap: () => setState(() {
-                    _textController.clear();
-                  })),
+          child: Row(
+            children: [
+              Image.asset("assets/images/app-logo.png"),
+              const Spacer(),
+              AnimSearchBar(
+                  rtl: true,
+                  color: Colors.grey,
+                  style: const TextStyle(),
+                  width: MediaQuery.of(context).size.width * 0.7,
+                  textController: _textController,
+                  onSuffixTap: () => setState(() {
+                        _textController.clear();
+                      })),
+            ],
+          ),
         ),
+        const SizedBox(height: 10),
         Expanded(
           child: CredentialsList(
             credentials: filteredCredentials,

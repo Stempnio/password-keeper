@@ -11,7 +11,7 @@ class Credentials extends Equatable {
     required this.passwordHash,
   });
 
-  factory Credentials.fromJson(Map<String, String> json) =>
+  factory Credentials.fromJson(Map<String, dynamic> json) =>
       _$CredentialsFromJson(json);
 
   Map<String, dynamic> toJson() => _$CredentialsToJson(this);

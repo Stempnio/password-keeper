@@ -1,3 +1,6 @@
+# app secret keys
+packages/credentials_crypto_service/lib/src/secrets/*
+
 # Firebase
 
 android/app/google-services.json

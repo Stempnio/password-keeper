@@ -13,5 +13,16 @@ abstract class CredentialsService {
 
   Future<void> deleteCredentials(Credentials credentials);
 
-  Future<void> editCredentials(int index, Credentials editedCredentials);
+  Future<void> editCredentials(
+      Credentials editedCredentials, Credentials newCredentials);
 }
+
+class GetUserException implements Exception {}
+
+class GetCredentialsException implements Exception {}
+
+class AddCredentialsException implements Exception {}
+
+class DeleteCredentialsException implements Exception {}
+
+class EditCredentialsException implements Exception {}

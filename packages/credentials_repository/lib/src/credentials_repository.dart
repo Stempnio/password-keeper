@@ -16,6 +16,7 @@ class CredentialsRepository {
   Future<void> deleteCredentials(Credentials credentials) =>
       _service.deleteCredentials(credentials);
 
-  Future<void> editCredentials(int index, Credentials editedCredentials) =>
-      _service.editCredentials(index, editedCredentials);
+  Future<void> editCredentials(
+          Credentials editedCredentials, Credentials newCredentials) =>
+      _service.editCredentials(editedCredentials, newCredentials);
 }

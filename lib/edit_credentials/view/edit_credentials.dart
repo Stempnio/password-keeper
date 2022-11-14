@@ -1,4 +1,5 @@
 import 'package:credentials_service/credentials_service.dart';
+import 'package:credentials_crypto_service/credentials_crypto_service.dart';
 import 'package:flutter/material.dart';
 
 class EditCredentials extends StatefulWidget {
@@ -20,7 +21,7 @@ class _EditCredentialsState extends State<EditCredentials> {
 
   String websiteURL = "";
   String login = "";
-  String passwordHash = "";
+  String password = "";
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +74,11 @@ class _EditCredentialsState extends State<EditCredentials> {
                       ),
                       const SizedBox(height: 10),
                       TextFormField(
-                        initialValue: widget.inputCredentials.passwordHash,
+                        initialValue:
+                            widget.inputCredentials.passwordHash.isNotEmpty
+                                ? PasswordCrypter.decrypt(
+                                    widget.inputCredentials.passwordHash)
+                                : '',
                         obscureText: true,
                         decoration: const InputDecoration(
                           hintText: 'Password',
@@ -83,7 +88,7 @@ class _EditCredentialsState extends State<EditCredentials> {
                             return 'Password can not be empty';
                           } else {
                             setState(() {
-                              passwordHash = value;
+                              password = value;
                             });
                             return null;
                           }
@@ -93,11 +98,13 @@ class _EditCredentialsState extends State<EditCredentials> {
                       ElevatedButton(
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
+                            var encryptedPassword =
+                                PasswordCrypter.encrypt(password);
                             widget.actionHandler(
                               Credentials(
                                 websiteURL: websiteURL,
                                 login: login,
-                                passwordHash: passwordHash,
+                                passwordHash: encryptedPassword,
                               ),
                             );
                             Navigator.pop(context);

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:password_keeper/credentials/bloc/credentials_bloc.dart';
 
 class SignIn extends StatelessWidget {
   const SignIn({Key? key}) : super(key: key);
@@ -9,6 +11,9 @@ class SignIn extends StatelessWidget {
     return SignInScreen(
       actions: [
         AuthStateChangeAction<SignedIn>((context, state) {
+          context
+              .read<CredentialsBloc>()
+              .add(CredentialsSubscriptionRequested());
           Navigator.pushReplacementNamed(context, '/main');
         }),
         AuthStateChangeAction<UserCreated>((context, state) {

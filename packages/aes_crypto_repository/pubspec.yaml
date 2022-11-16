@@ -1,0 +1,16 @@
+name: aes_crypto_repository
+description: Dart package which allows to encrypt and decrypt data using AES algorithm.
+version: 0.1.0+1
+publish_to: none
+
+environment:
+  sdk: ">=2.17.0 <3.0.0"
+
+dependencies:
+  encrypt: ^5.0.1
+  crypto_repository:
+    path: ../crypto_repository
+
+dev_dependencies:
+  test: ^1.22.0
+  very_good_analysis: ^3.0.1

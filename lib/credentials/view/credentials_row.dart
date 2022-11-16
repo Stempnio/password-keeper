@@ -1,6 +1,7 @@
 import 'package:credentials_service/credentials_service.dart';
+import 'package:crypto_repository/crypto_repository.dart';
 import 'package:flutter/material.dart';
-import 'package:credentials_crypto_service/credentials_crypto_service.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:password_keeper/display_credentials/display_credentials.dart';
 
 class CredentialsRow extends StatelessWidget {
@@ -38,7 +39,8 @@ class CredentialsRow extends StatelessWidget {
   }
 
   void _displayDecryptedPassword(BuildContext context) {
-    var decryptedPassword = PasswordCrypter.decrypt(credentials.passwordHash);
+    var decryptedPassword =
+        context.read<CryptoRepository>().decrypt(credentials.passwordHash);
     Navigator.push(
       context,
       DisplayCredentials.route(credentials, decryptedPassword),

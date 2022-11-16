@@ -29,8 +29,10 @@ dependencies:
     path: packages/firestore_credentials_service
   credentials_service:
     path: packages/credentials_service
-  credentials_crypto_service:
-    path: packages/credentials_crypto_service
+  crypto_repository:
+    path: packages/crypto_repository
+  aes_crypto_repository:
+    path: packages/aes_crypto_repository
   firebase_auth_mocks: ^0.9.1
   fake_cloud_firestore: ^2.0.1
 

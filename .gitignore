@@ -1,5 +1,5 @@
 # app secret keys
-packages/credentials_crypto_service/lib/src/secrets/*
+lib/secrets/secrets.dart
 
 # Firebase
 

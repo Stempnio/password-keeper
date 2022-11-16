@@ -1,6 +1,7 @@
 import 'package:credentials_service/credentials_service.dart';
-import 'package:credentials_crypto_service/credentials_crypto_service.dart';
+import 'package:crypto_repository/crypto_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class EditCredentials extends StatefulWidget {
   const EditCredentials({
@@ -74,11 +75,12 @@ class _EditCredentialsState extends State<EditCredentials> {
                       ),
                       const SizedBox(height: 10),
                       TextFormField(
-                        initialValue:
-                            widget.inputCredentials.passwordHash.isNotEmpty
-                                ? PasswordCrypter.decrypt(
-                                    widget.inputCredentials.passwordHash)
-                                : '',
+                        initialValue: widget
+                                .inputCredentials.passwordHash.isNotEmpty
+                            ? context
+                                .read<CryptoRepository>()
+                                .decrypt(widget.inputCredentials.passwordHash)
+                            : '',
                         obscureText: true,
                         decoration: const InputDecoration(
                           hintText: 'Password',
@@ -98,8 +100,9 @@ class _EditCredentialsState extends State<EditCredentials> {
                       ElevatedButton(
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
-                            var encryptedPassword =
-                                PasswordCrypter.encrypt(password);
+                            var encryptedPassword = context
+                                .read<CryptoRepository>()
+                                .encrypt(password);
                             widget.actionHandler(
                               Credentials(
                                 websiteURL: websiteURL,

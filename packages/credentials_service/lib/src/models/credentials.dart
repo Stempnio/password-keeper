@@ -27,8 +27,11 @@ class Credentials extends Equatable {
         passwordHash,
       ];
 
-  Credentials copyWith(
-      String? websiteURL, String? login, String? passwordHash) {
+  Credentials copyWith({
+    String? websiteURL,
+    String? login,
+    String? passwordHash,
+  }) {
     return Credentials(
       websiteURL: websiteURL ?? this.websiteURL,
       login: login ?? this.login,

@@ -1,5 +1,7 @@
 # Password keeper
 
+[![Build](https://github.com/Stempnio/password-keeper/actions/workflows/build.yml/badge.svg)](https://github.com/Stempnio/password-keeper/actions/workflows/build.yml)
+
 Flutter app for managing passwords using AES encryption with Firebase authentication and storage services.
 
 ### Screenshots

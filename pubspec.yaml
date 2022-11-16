@@ -31,13 +31,14 @@ dependencies:
     path: packages/credentials_service
   credentials_crypto_service:
     path: packages/credentials_crypto_service
+  firebase_auth_mocks: ^0.9.1
+  fake_cloud_firestore: ^2.0.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   test: ^1.16.0
   bloc_test: ^9.0.0
-
   flutter_lints: ^2.0.0
 
 flutter:

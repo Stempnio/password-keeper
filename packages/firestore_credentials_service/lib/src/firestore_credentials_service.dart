@@ -11,13 +11,16 @@ const String _credentialsCollection = "credentials";
 /// {@endtemplate}
 class FirestoreCredentialsService implements CredentialsService {
   /// {@macro firestore_credentials_service}
-  FirestoreCredentialsService({FirebaseFirestore? firebaseFirestore})
-      : _firebaseFirestore = firebaseFirestore ?? FirebaseFirestore.instance;
+  FirestoreCredentialsService(
+      {FirebaseFirestore? firebaseFirestore, FirebaseAuth? firebaseAuth})
+      : _firebaseFirestore = firebaseFirestore ?? FirebaseFirestore.instance,
+        _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance;
 
   final FirebaseFirestore _firebaseFirestore;
+  final FirebaseAuth _firebaseAuth;
 
   String _getUserEmail() {
-    var email = FirebaseAuth.instance.currentUser?.email ?? '';
+    var email = _firebaseAuth.currentUser?.email ?? '';
     if (email == '') {
       throw GetUserException();
     }
